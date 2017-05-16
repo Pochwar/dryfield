@@ -19,11 +19,11 @@ ScoreController.prototype.listenToView = function(){
 
     // download score
     this._view.on('download', function(data) {
-        this.model.downloadScore(data.id);
+        this.model.getScores();
     });
 
     // add score
     this._view.on('add-score', function(data) {
-        this.model.addScore(data.id);
+        this.model.addScore(data.nom, data.score);
     });
 }
