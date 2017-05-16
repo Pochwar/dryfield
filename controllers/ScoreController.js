@@ -18,12 +18,12 @@ ScoreController.prototype.constructor = ScoreController;
 ScoreController.prototype.listenToView = function(){
 
     // download score
-    this._view.on('download', function(data) {
+    this._view.on('show-scores', function(data) {
         this.model.getScores();
     });
 
     // add score
     this._view.on('add-score', function(data) {
-        this.model.addScore(data.nom, data.score);
+        this.model.addScore(data.username, data.score);
     });
 }
