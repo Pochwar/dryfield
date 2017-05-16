@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Dryfiled</title>
+	<meta charset="utf-8"/>
+</head>
+<body>
+
+
+	<header>
+
+		<div id="harvest">Harvest</div>
+		<div id="litres">L</div>
+		<div id="money">$</div>
+
+		<div id="joueurs-scores">
+			<button id="joueur">gamers</button>
+			<button id="scores">scores</button>
+			<button class="start pause">GO</button>
+		</div>
+
+	</header>
+
+	<section>
+		
+		<div id="field0">
+			<button id="irrigate-field0">irrigate-field0</button>
+			<div id="field0-value"></div>
+			<button id="harvest-field0">harvest-field0</button>
+		</div>
+
+		<div id="field1">
+			<button id="irrigate-field1">irrigate-field1</button>
+			<div id="fieldVue1"></div>
+			<button id="harvest-field1">harvest-field1</button>
+		</div>
+
+		<div id="field2">
+			<button id="irrigate-field2">irrigate-field2</button>
+			<div id="fieldVue2"></div>
+			<button id="harvest-field2">harvest-field2</button>
+		</div>
+
+		
+	</section>
+
+
+
+	<footer>
+		
+		<button id="waterDipslay">Buy Water</button>
+
+		<form>
+			<input type="number">
+			<input type="submit" value="BUY" id="buyWater"/>
+		</form>
+		
+
+	</footer>
+
+	<script
+			  src="https://code.jquery.com/jquery-3.2.1.min.js"
+			  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+			  crossorigin="anonymous">
+
+	</script>
+
+
+	<script src="tools/EventEmitter.js"></script>
+	<script src="views/GameView.js"></script>
+	<script src="controllers/GameController.js"></script>
+	<script src="app.js"></script>
+		
+
+
+
+</body>
+</html>
