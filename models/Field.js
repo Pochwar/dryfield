@@ -14,10 +14,12 @@ Field.prototype.constructor = Field;
 
 Field.prototype.setWaterReserve = function() {
    this.waterReserve -= this.consumption;
+   this.emit('set-waterReserve') {waterReserve : this.waterReserve}
     }
 
 Field.prototype.setConsumption = function () {
    /* this.consumption = ;*/
+    this.emit('set-consumption') {consumption : this.consumption}
 }
 
 Field.prototype.setMaturity = function(bool) {
