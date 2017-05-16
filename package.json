@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node app.js"
+    "start": "lite-server"
   },
   "repository": {
     "type": "git",
@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/Pochwar/dryfield/issues"
   },
-  "homepage": "https://github.com/Pochwar/dryfield#readme"
+  "homepage": "https://github.com/Pochwar/dryfield#readme",
+  "devDependencies": {
+    "lite-server": "^2.3.0"
+  }
 }
