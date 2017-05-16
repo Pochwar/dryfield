@@ -22,21 +22,41 @@ GameView.prototype.bindEvents = function() {
 
 	this.fields.forEach((function(field) {
 
-		console.log(field);
+		console.log(field.number);
 
-		$('#irrigate-' + field).click(this.irrigate.bind(this, field));
-		$('#harvest-' + field).click(this.harvest.bind(this, field));
+		$('#irrigate-' + field.number).click(this.irrigate.bind(this, field));
+		$('#harvest-' + field.number).click(this.harvest.bind(this, field));
 		
 	}).bind(this));
 
 
 	$('#waterDisplay').click(this.buyWater, this.pause);
 
-	$('#go').click(function() {
+	$('#go').click((function(ev) {
+		var el = ev.target;
 
-		console.log(this);
-		
-	});
+		if ($(el).hasClass('pause')) {
+
+			this.emit('start');
+
+			$(el).addClass('start');
+
+			$(el).removeClass('pause');
+
+			$(el).text('PAUSE');
+
+		}else{
+
+			this.emit('pause');
+
+			$(el).addClass('pause');
+
+			$(el).removeClass('start');
+
+			$(el).text('GO');
+		}			
+	
+	}).bind(this));
 	
 
 
@@ -61,10 +81,10 @@ GameView.prototype.pause = function() {
 
 GameView.prototype.irrigate = function(field) {
 
-	console.log(field);
+
 	this.emit('irrigate', {
 
-		field: field
+		field: field.number
 	});
 
 }
@@ -72,10 +92,10 @@ GameView.prototype.irrigate = function(field) {
 
 GameView.prototype.harvest = function(field) {
 
-	console.log(field);
+
 	this.emit('harvest', {
 
-		field: field
+		field: field.number
 	});
 
 }
