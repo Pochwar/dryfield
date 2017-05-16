@@ -23,13 +23,15 @@ GameView.prototype.init = function() {
 
 GameView.prototype.bindEvents = function() {
 	this.fields.forEach((function(field) {
+
 		$('#irrigate-' + field.number).click(this.irrigate.bind(this, field));
 		$('#harvest-' + field.number).click(this.harvest.bind(this, field));
+
 	}).bind(this));
 
 	$('#waterDisplay').click(this.buyWater, this.pause);
 
-<<<<<<< HEAD
+
 	$('#go').click((function(ev) {
 		var el = ev.target;
 		if ($(el).hasClass('pause')) {
@@ -44,16 +46,23 @@ GameView.prototype.bindEvents = function() {
 			$(el).text('GO');
 		}
 	}).bind(this));
-=======
-	$('#go').click(function() {
 
-		console.log(this);
-		
-	});
+	$('#go').click((function(ev) {
+		var el = ev.target;
+		if ($(el).hasClass('pause')) {
+			this.emit('start');
+			$(el).addClass('start');
+			$(el).removeClass('pause');
+			$(el).text('PAUSE');
+		} else {
+			this.emit('pause');
+			$(el).addClass('pause');
+			$(el).removeClass('start');
+			$(el).text('GO');
+		}
+	}).bind(this));
 	
 
-
->>>>>>> add models index.html
 }
 
 GameView.prototype.start = function() {
@@ -65,7 +74,6 @@ GameView.prototype.pause = function() {
 }
 
 GameView.prototype.irrigate = function(field) {
-	console.log(field)
 	this.emit('irrigate', {
 		field: field.number,
 		waterReserve: field.waterReserve
