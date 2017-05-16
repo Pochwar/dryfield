@@ -17,5 +17,5 @@ Field.prototype.setWaterReserve = function(quantity) {
 
 Field.prototype.setMaturity = function(bool) {
     this.maturity = bool ;
-    this.emit('set-maturity') {maturity : this.maturity}
+    this.emit('set-maturity', {maturity : this.maturity});
 }
