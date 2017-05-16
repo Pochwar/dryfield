@@ -32,9 +32,11 @@ GameView.prototype.bindEvents = function() {
 
 	$('#waterDisplay').click(this.buyWater, this.pause);
 
-	$('.start').click(this.start);
+	$('#go').click(function() {
 
-	$('.pause').click(this.pause);
+		console.log(this);
+		
+	});
 	
 
 
