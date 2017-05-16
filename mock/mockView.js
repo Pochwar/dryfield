@@ -1,7 +1,9 @@
-var MockView = function(view, user, fields) {
+var MockView = function(user, fields) {
 
     // set EventEmitter context to MockView context
     EventEmitter.call(this);
+
+    this._fields = fields;
 
     this.listen();
 }
@@ -15,26 +17,42 @@ MockView.prototype.constructor = MockView;
 // set view listener
 MockView.prototype.listen = function(){
 
+    // to button
     document.querySelector('#irrigate').onclick = (function(e) {
-        this.emit('irrigate', {'data':'data'});
+        this.emit('irrigate', {field: 0});
     }).bind(this);
 
     document.querySelector('#harvest').onclick = (function(e) {
-        this.emit('harvest');
+        this.emit('harvest', {field: 1});
     }).bind(this);
 
     document.querySelector('#buy-water').onclick = (function(e) {
-        this.emit('buy-water');
+        this.emit('buy-water', {quantity: 5});
     }).bind(this);
 
     document.querySelector('#start').onclick = (function(e) {
-        console.log(this);
         this.emit('start');
     }).bind(this);
 
     document.querySelector('#stop').onclick = (function(e) {
         this.emit('stop');
     }).bind(this);
+
+    // to model
+    this._fields.forEach( function(element) {
+        
+        element.on('set-waterReserve', function(data){
+            console.log('set-water-reserve');
+            console.log(data);
+        });
+
+        element.on('set-maturity', function(data){
+            console.log('set-maturity');
+            console.log(data);
+        });
+
+
+    }, this);
 }
 
 // start game
