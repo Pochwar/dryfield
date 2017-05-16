@@ -29,6 +29,7 @@ GameView.prototype.bindEvents = function() {
 
 	$('#waterDisplay').click(this.buyWater, this.pause);
 
+<<<<<<< HEAD
 	$('#go').click((function(ev) {
 		var el = ev.target;
 		if ($(el).hasClass('pause')) {
@@ -43,6 +44,16 @@ GameView.prototype.bindEvents = function() {
 			$(el).text('GO');
 		}
 	}).bind(this));
+=======
+	$('#go').click(function() {
+
+		console.log(this);
+		
+	});
+	
+
+
+>>>>>>> add models index.html
 }
 
 GameView.prototype.start = function() {
