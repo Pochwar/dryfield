@@ -6,6 +6,8 @@ function GameView(player, fields) {
 	this.fields = fields;
 	this.init();
 	this.bindEvents();
+
+	this.waterReserve
 }
 
 GameView.prototype = Object.create(EventEmitter.prototype);
@@ -22,10 +24,10 @@ GameView.prototype.init = function() {
     }).bind(this));
 
     //get emits
-    this.fields.forEach((function(field) {
+    this.fields.forEach(function(field) {
         field.on('set-waterReserve', this.setWaterReserve);
-        $('#' + field.number + "-value").text(field.waterReserve + "L");
-    }).bind(this));
+        field.on('set-harvest-state', this.setHarvestState);
+    }, this);
 }
 
 GameView.prototype.bindEvents = function() {
@@ -72,4 +74,21 @@ GameView.prototype.harvest = function(field) {
 GameView.prototype.buyWater = function() {
 	console.log('buyWater');
 }
+
+GameView.prototype.setWaterReserve = function(data) {
+    $('#' + data.field + "-value").text(data.waterReserve + "L");
+}
+
+GameView.prototype.setHarvestState = function(data) {
+    console.log(data)
+    // Object { field: "field0", state: "dead" }
+    switch(data.state){
+        case "dead" :
+            $('#harvest-' + data.field).css("background", "#f00");
+            break
+        case "ok" :
+            $('#harvest-' + data.field).css("background", "green");
+            break
+    }
+ }
 
