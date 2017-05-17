@@ -23,10 +23,8 @@ GameView.prototype.init = function() {
 
 GameView.prototype.bindEvents = function() {
 	this.fields.forEach((function(field) {
-
 		$('#irrigate-' + field.number).click(this.irrigate.bind(this, field));
 		$('#harvest-' + field.number).click(this.harvest.bind(this, field));
-
 	}).bind(this));
 
 	$('#waterDisplay').click(this.buyWater, this.pause);
@@ -61,7 +59,6 @@ GameView.prototype.bindEvents = function() {
 			$(el).text('GO');
 		}
 	}).bind(this));
-	
 
 }
 
@@ -74,6 +71,7 @@ GameView.prototype.pause = function() {
 }
 
 GameView.prototype.irrigate = function(field) {
+// add player to view
 	this.emit('irrigate', {
 		field: field.number,
 		waterReserve: field.waterReserve
