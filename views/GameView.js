@@ -24,6 +24,7 @@ GameView.prototype.init = function() {
     }).bind(this));
 
     $('#buy_water').css('visibility', 'hidden');
+    $('#waterDisplay').css('visibility', 'hidden');
 
     //get emits
     this.fields.forEach(function(field) {
@@ -44,6 +45,11 @@ GameView.prototype.bindEvents = function() {
 
 	$('#waterDisplay').click(this.buyWater.bind(this));
 
+    $('#closeBuyWater').click((function(){
+        this.emit("start");
+        $('#buy_water').css('visibility', 'hidden');
+    }).bind(this));
+
     $('#buyWater').click((function(e){
         e.preventDefault();
         var waterQty = parseInt($('#waterQty').val());
@@ -61,11 +67,13 @@ GameView.prototype.bindEvents = function() {
 			$(el).addClass('start');
 			$(el).removeClass('pause');
 			$(el).text('PAUSE');
+            $('#waterDisplay').css('visibility', 'visible');
 		}else{
 			this.emit('stop');
 			$(el).addClass('pause');
 			$(el).removeClass('start');
 			$(el).text('GO');
+            $('#waterDisplay').css('visibility', 'hidden');
 		}
 	}).bind(this));
 }
