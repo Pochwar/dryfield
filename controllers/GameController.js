@@ -126,6 +126,15 @@ GameController.prototype.irrigate = function(data){
     // get water 
     var water = this._fields[id].waterReserve;
     
+    // enough water in player reserve ?
+    var playerWater = this._player.waterReserve;
+    if( water > playerWater ) {
+        return;
+    }
+
+    // take water from player
+    this._player.setWaterReserve = playerWater - water;
+
     // reinit fields if harvest is already dead
     if( this._fields[id].harvestState == 'dead') {
         this._fields[id].setWaterReserve(water + CONF.game.irrigationAmount);    
@@ -183,7 +192,7 @@ GameController.prototype.buyWater = function(data){
 // water consumption
 GameController.prototype.waterConsumption = function(){
     // TODO : calculate this...
-    return 1;
+    return 0.1;
 }
 
 // find field id
