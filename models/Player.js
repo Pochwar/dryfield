@@ -14,7 +14,7 @@ Player.prototype.constructor = Player;
 
 Player.prototype.setNbHarvest = function(nbHarvest){
     this.nbHarvest = nbHarvest;
-    this.emit("set-harvest", {money : this.money});
+    this.emit("set-harvest", {nbHarvest : this.nbHarvest});
 }
 
 Player.prototype.setMoney = function(qtyMoney){

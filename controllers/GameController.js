@@ -195,7 +195,7 @@ GameController.prototype.buyWater = function(data){
 // water consumption
 GameController.prototype.waterConsumption = function(){
     // TODO : calculate this...
-    return 0.1;
+    return 1;
 }
 
 // find field id

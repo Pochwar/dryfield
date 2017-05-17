@@ -28,6 +28,10 @@ GameView.prototype.init = function() {
         field.on('set-waterReserve', this.setWaterReserve);
         field.on('set-harvest-state', this.setHarvestState);
     }, this);
+
+    this.player.on("set-harvest", this.setHarvest);
+    this.player.on("set-money", this.setMoney);
+    this.player.on("set-water", this.setWater);
 }
 
 GameView.prototype.bindEvents = function() {
@@ -84,11 +88,26 @@ GameView.prototype.setHarvestState = function(data) {
     // Object { field: "field0", state: "dead" }
     switch(data.state){
         case "dead" :
-            $('#harvest-' + data.field).css("background", "#f00");
+            $('#harvest-' + data.field).css("color", "#f00");
             break
         case "ok" :
-            $('#harvest-' + data.field).css("background", "green");
+            $('#harvest-' + data.field).css("color", "#0CBA00");
+            break
+
+        case "notRdy" :
+            $('#harvest-' + data.field).css("color", "#000");
             break
     }
  }
 
+GameView.prototype.setHarvest = function(data) {
+    $("#harvest").text(data.nbHarvest + " Harvest");
+}
+
+GameView.prototype.setMoney = function(data) {
+    $("#money").text(data.money + " $");
+}
+
+GameView.prototype.setWater = function(data) {
+    $("#litres").text(data.water + " L");
+}
