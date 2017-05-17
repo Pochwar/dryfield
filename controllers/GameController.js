@@ -105,8 +105,7 @@ GameController.prototype.runGame = function(){
 }
 
 // irrigate field
-GameController.prototype.irrigate = function(data){
-    
+GameController.prototype.irrigate = function(data){    
     // index
     var id = this.findId( data.field);
     
