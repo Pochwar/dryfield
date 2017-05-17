@@ -38,7 +38,8 @@ GameView.prototype.init = function() {
 }
 
 GameView.prototype.bindEvents = function() {
-	this.fields.forEach((function(field) {
+	
+    this.fields.forEach((function(field) {
 		$('#irrigate-' + field.number).click(this.irrigate.bind(this, field));
 		$('#harvest-' + field.number).click(this.harvest.bind(this, field));
 	}).bind(this));
@@ -74,6 +75,7 @@ GameView.prototype.bindEvents = function() {
 			$(el).removeClass('start');
 			$(el).text('GO');
             $('#waterDisplay').css('visibility', 'hidden');
+            $('#buy_water').css('visibility', 'hidden');
 		}
 	}).bind(this));
 }

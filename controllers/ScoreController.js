@@ -1,11 +1,17 @@
-var ScoreController = function(view, model) {
+var ScoreController = function(view, score) {
 
     // set EventEmitter context to ScoreController context
     EventEmitter.call(this);
 
     // attrs
     this._view = view;
-    this._model = model;
+    this._score = score;
+
+    // bind method to this
+    this.getScores = this.getScores.bind(this);
+
+    // init
+    this.listenToView();
 }
 
 // extends ScoreController with EventEmitter
@@ -18,12 +24,22 @@ ScoreController.prototype.constructor = ScoreController;
 ScoreController.prototype.listenToView = function(){
 
     // download score
-    this._view.on('show-scores', function(data) {
-        this.model.getScores();
-    });
+    this._view.on('show-scores', this.getScores);
 
-    // add score
-    this._view.on('add-score', function(data) {
-        this.model.addScore(data.username, data.score);
+}
+
+ScoreController.prototype.getScores = function(){
+    console.log(this._score);
+    $.ajax({
+        type: "GET",
+        url:  CONF.general.apiUrl + '/scores/',
+        dataType: 'json',
+        success: (function(data) {
+            console.log(this._score);
+            this._score.setScores(  data.list);
+        }).bind(this),
+        error : function(err) {
+            console.warn(err);
+        }
     });
 }
