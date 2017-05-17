@@ -107,7 +107,7 @@ GameController.prototype.runGame = function(){
 // irrigate field
 GameController.prototype.irrigate = function(data){    
     // index
-    var id = this.findId( data.field);
+    var id = this.findId(data.field);
     
     // check index
     if( id == -1 ) {
@@ -117,7 +117,7 @@ GameController.prototype.irrigate = function(data){
     // get water 
     var water = this._fields[id].waterReserve;
     
-    this._fields[id].setWaterReserve( water + CONF.game.irrigationAmount);
+    this._fields[id].setWaterReserve(water + CONF.game.irrigationAmount);
     
 }
 

@@ -15,7 +15,9 @@ Field.prototype.constructor = Field;
 
 Field.prototype.setWaterReserve = function(quantity) {
     this.waterReserve = quantity;
-    this.emit('set-waterReserve', {waterReserve : this.waterReserve});
+    this.emit('set-waterReserve', {
+        waterReserve : this.waterReserve
+    });
 }
 
 Field.prototype.setMaturity = function(bool) {

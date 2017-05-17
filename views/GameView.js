@@ -38,37 +38,15 @@ GameView.prototype.bindEvents = function() {
 			$(el).removeClass('pause');
 			$(el).text('PAUSE');
 		}else{
-			this.emit('pause');
+			this.emit('stop');
 			$(el).addClass('pause');
 			$(el).removeClass('start');
 			$(el).text('GO');
 		}
 	}).bind(this));
-
-	$('#go').click((function(ev) {
-		var el = ev.target;
-		if ($(el).hasClass('pause')) {
-			this.emit('start');
-			$(el).addClass('start');
-			$(el).removeClass('pause');
-			$(el).text('PAUSE');
-		} else {
-			this.emit('pause');
-			$(el).addClass('pause');
-			$(el).removeClass('start');
-			$(el).text('GO');
-		}
-	}).bind(this));
-
 }
 
-GameView.prototype.start = function() {
-	this.emit('start', {});
-}
 
-GameView.prototype.pause = function() {
-	this.emit('pause', {});
-}
 
 GameView.prototype.irrigate = function(field) {
 // add player to view
