@@ -12,7 +12,7 @@ img {
 }
 
 #recolte {
-    margin-left: 500px;
+    margin-left: 70px;
    }
 
 #joueur {
@@ -20,51 +20,44 @@ img {
     color: white;
 }
 
-#start {
+#go {
     font-weight: bold;
-    margin-left: 32px;
+    margin-left: 343px;
     margin-top: 10px;
 }
 
-#compteur{
-     margin-left: 10px;
-    margin-bottom: 50px;
+#compteur {
+    padding: 70px;
+    font-size: 20px;
 }
+
+
 
 #affichage {
-    margin-right: 50px;
-    text-align: center;
+    display: flex;
+    justify-content: space-around;
 }
 
-
-#field0-value {
-	display:block;
-	position: relative;
-	height:60px;
-	width:62px;
-	background:#3CB371;
-    border-rad
-	color:#FFFFFF;
+#affichage > div {
+    height: 100px;
+    width: 100px;
+    color: #FFFFFF;
     text-align: center;
     border-radius: 20px;
+    padding: 9px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; 
 }
 
-#field1-value {
-	display:block;
-	position: relative;
-	height:60px;
-	width:62px;
-	background:	#3CB371;
-	color:#FFFFFF;
-    border-radius: 20px;
-}
+#field0-value, #field1-value, #field2-value {
+    background: #3CB371;
+    padding: 10px 0;
+    border-radius: 5px;
+}   
+    
 
-#field2-value {
-	display:block;
-	position: relative;
-	height:60px;
-	width:62px;
-	background:	#3CB371;
-	color:#FFFFFF;
-    border-radius: 20px;
+#eau {
+    margin-left: 180px;
+    font-style: center;
 }
