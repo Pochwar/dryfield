@@ -165,6 +165,9 @@ GameController.prototype.harvest = function(data) {
         // player scores
         this._player.setNbHarvest( this._player.nbHarvest + 1);
 
+        // player money
+        this._player.setMoney( this._player.money + CONF.game.harvestReward);
+
         // reset field
         this._fields[id].setDayCount(0);
 
@@ -195,7 +198,7 @@ GameController.prototype.buyWater = function(data){
 // water consumption
 GameController.prototype.waterConsumption = function(){
     // TODO : calculate this...
-    return 1;
+    return 0.2;
 }
 
 // find field id

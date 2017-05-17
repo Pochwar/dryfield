@@ -1,7 +1,8 @@
 var CONF = {
     game: {
         irrigationAmount: 1,
-        daysToHarvest: 20
+        daysToHarvest: 20,
+        harvestReward: 40,
     },
     player : {
         initialMoney: 50, 
