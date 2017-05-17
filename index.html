@@ -16,7 +16,7 @@
 		<div id="joueurs-scores">
 			<button id="joueur">gamers</button>
 			<button id="scores">scores</button>
-			<button class="start pause">GO</button>
+			<button id="go" class="pause">GO</button>
 		</div>
 
 	</header>
@@ -31,13 +31,13 @@
 
 		<div id="field1">
 			<button id="irrigate-field1">irrigate-field1</button>
-			<div id="fieldVue1"></div>
+			<div id="field1-value"></div>
 			<button id="harvest-field1">harvest-field1</button>
 		</div>
 
 		<div id="field2">
 			<button id="irrigate-field2">irrigate-field2</button>
-			<div id="fieldVue2"></div>
+			<div id="field2-value"></div>
 			<button id="harvest-field2">harvest-field2</button>
 		</div>
 
@@ -66,7 +66,10 @@
 	</script>
 
 
+	<script src="conf/conf.js"></script>
 	<script src="tools/EventEmitter.js"></script>
+	<script src="models/Player.js"></script>
+	<script src="models/Field.js"></script>
 	<script src="views/GameView.js"></script>
 	<script src="controllers/GameController.js"></script>
 	<script src="app.js"></script>
