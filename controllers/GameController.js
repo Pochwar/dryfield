@@ -77,7 +77,18 @@ GameController.prototype.stopGame = function() {
 
 // run the game
 GameController.prototype.runGame = function(){
-   
+    
+    // has player lost ?    
+    var totalFieldsWater = this._fields.reduce( function(acc, el) {
+        return acc + el.waterReserve;
+    }, 0);
+
+    if( totalFieldsWater == 0 ) {
+        alert('Vous avez perdu');
+        this.stopGame();
+        return;
+    }
+
     // loop all fields
     this._fields.forEach(function(element) {
 
@@ -111,6 +122,7 @@ GameController.prototype.runGame = function(){
         }
 
     }, this);
+
 }
 
 // irrigate field
