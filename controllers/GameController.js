@@ -127,13 +127,13 @@ GameController.prototype.irrigate = function(data){
     var water = this._fields[id].waterReserve;
     
     // enough water in player reserve ?
-    var playerWater = this._player.waterReserve;
-    if( water > playerWater ) {
+    var playerWater = this._player.water;
+    if( CONF.game.irrigationAmount > playerWater ) {
         return;
     }
 
     // take water from player
-    this._player.setWaterReserve = playerWater - water;
+    this._player.setWater(playerWater - CONF.game.irrigationAmount);
 
     // reinit fields if harvest is already dead
     if( this._fields[id].harvestState == 'dead') {
