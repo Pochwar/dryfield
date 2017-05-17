@@ -77,7 +77,18 @@ GameController.prototype.stopGame = function() {
 
 // run the game
 GameController.prototype.runGame = function(){
-   
+    
+    // has player lost ?    
+    var totalFieldsWater = this._fields.reduce( function(acc, el) {
+        return acc + el.waterReserve;
+    }, 0);
+
+    if( totalFieldsWater == 0 ) {
+        alert('Vous avez perdu');
+        this.stopGame();
+        return;
+    }
+
     // loop all fields
     this._fields.forEach(function(element) {
 
@@ -111,6 +122,7 @@ GameController.prototype.runGame = function(){
         }
 
     }, this);
+
 }
 
 // irrigate field
@@ -165,6 +177,9 @@ GameController.prototype.harvest = function(data) {
         // player scores
         this._player.setNbHarvest( this._player.nbHarvest + 1);
 
+        // player money
+        this._player.setMoney( this._player.money + CONF.game.harvestReward);
+
         // reset field
         this._fields[id].setDayCount(0);
 
@@ -188,14 +203,14 @@ GameController.prototype.buyWater = function(data){
     }
 
     // set data
-    this._player.setMoney( Player.money - cost);
-    this._player.setWater( player.water + quantity);
+    this._player.setMoney( this._player.money - cost);
+    this._player.setWater( this._player.water + quantity);
 }
 
 // water consumption
 GameController.prototype.waterConsumption = function(){
     // TODO : calculate this...
-    return 1;
+    return 0.2;
 }
 
 // find field id
