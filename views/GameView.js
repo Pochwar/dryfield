@@ -12,11 +12,18 @@ GameView.prototype = Object.create(EventEmitter.prototype);
 GameView.prototype.constructor = GameView;
 
 GameView.prototype.init = function() {
+    //display default values
     $('#harvest').text(this.player.nbHarvest + ' Harvest(s)');
     $('#litres').text(this.player.water + ' L');
     $('#money').text(this.player.money + ' $');
 
     this.fields.forEach((function(field) {
+        $('#' + field.number + "-value").text(field.waterReserve + "L");
+    }).bind(this));
+
+    //get emits
+    this.fields.forEach((function(field) {
+        field.on('set-waterReserve', this.setWaterReserve);
         $('#' + field.number + "-value").text(field.waterReserve + "L");
     }).bind(this));
 }
