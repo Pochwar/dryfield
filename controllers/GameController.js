@@ -19,8 +19,10 @@ var GameController = function(view, player, fields) {
     this.buyWater = this.buyWater.bind(this);
     this.runGame = this.runGame.bind(this);
 
-    // listen
-    this.listenToView();
+    // listen to stop/start
+    this._view.on('start', this.startGame);
+    this._view.on('stop', this.stopGame);
+
 }
 
 // extends GameController with EventEmitter
@@ -30,13 +32,7 @@ GameController.prototype = Object.create(EventEmitter.prototype);
 GameController.prototype.constructor = GameController;
 
 // set view listener
-GameController.prototype.listenToView = function(){
-
-    // start game
-    this._view.on('start', this.startGame);
-
-    // stop game
-    this._view.on('stop', this.stopGame);
+GameController.prototype.addGameControls = function(){
 
     // irrigate field
     this._view.on('irrigate', this.irrigate);
@@ -48,6 +44,13 @@ GameController.prototype.listenToView = function(){
     this._view.on('buy-water', this.buyWater);
 }
 
+// remove view listener
+GameController.prototype.removeGameControls = function(){
+    this._view.off('irrigate', this.irrigate);
+    this._view.off('harvest', this.harvest);
+    this._view.off('buy-water', this.buyWater);
+}
+
 // start game
 GameController.prototype.startGame = function() {
     if( this._interval) {
@@ -56,12 +59,20 @@ GameController.prototype.startGame = function() {
 
     this._interval = setInterval( this.runGame, 1000);
     
+    // listen
+    this.addGameControls();
 }
 
 // stop game
 GameController.prototype.stopGame = function() {
+    
+    // clear interval
     clearInterval( this._interval);
     this._interval = null;
+
+    // Remove events listeners
+    this.removeGameControls();
+
 }
 
 // run the game
@@ -73,8 +84,8 @@ GameController.prototype.runGame = function(){
         // increase days by 1
         element.incrementDayCount();
 
-        // field is rdy to harvest
-        if( element.maturity) {
+        // field is rdy to harvest or dead
+        if( element.harvestState == 'ok' || element.harvestState == 'dead') {
             return;
         }
 
@@ -88,7 +99,6 @@ GameController.prototype.runGame = function(){
         if( water < waterConsumption) {
             element.setWaterReserve(0);
             element.setHarvestState('dead');
-            element.setMaturity(false);
             return;
         }
         
@@ -98,7 +108,6 @@ GameController.prototype.runGame = function(){
         // is harvest rdy ?
         if( element.dayCount == CONF.game.daysToHarvest) {
             element.setHarvestState('ok');
-            element.setMaturity(true);
         }
 
     }, this);
@@ -117,7 +126,25 @@ GameController.prototype.irrigate = function(data){
     // get water 
     var water = this._fields[id].waterReserve;
     
-    this._fields[id].setWaterReserve(water + CONF.game.irrigationAmount);
+    // enough water in player reserve ?
+    var playerWater = this._player.waterReserve;
+    if( water > playerWater ) {
+        return;
+    }
+
+    // take water from player
+    this._player.setWaterReserve = playerWater - water;
+
+    // reinit fields if harvest is already dead
+    if( this._fields[id].harvestState == 'dead') {
+        this._fields[id].setWaterReserve(water + CONF.game.irrigationAmount);    
+        this._fields[id].setHarvestState('notRdy');    
+        this._fields[id].setDayCount(0);    
+    }
+    // add water to field
+    else {
+        this._fields[id].setWaterReserve(water + CONF.game.irrigationAmount);
+    }
     
 }
 
@@ -133,13 +160,12 @@ GameController.prototype.harvest = function(data) {
     }
 
     // harvest field
-    if( this._fields[id].maturity) {
+    if( this._fields[id].harvestState == 'ok') {
         
         // player scores
         this._player.setNbHarvest( this._player.nbHarvest + 1);
 
         // reset field
-        this._fields[id].maturity = false;
         this._fields[id].dayCount = 0;
     }
 }
@@ -166,7 +192,7 @@ GameController.prototype.buyWater = function(data){
 // water consumption
 GameController.prototype.waterConsumption = function(){
     // TODO : calculate this...
-    return 1;
+    return 0.1;
 }
 
 // find field id
