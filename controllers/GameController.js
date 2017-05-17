@@ -166,7 +166,10 @@ GameController.prototype.harvest = function(data) {
         this._player.setNbHarvest( this._player.nbHarvest + 1);
 
         // reset field
-        this._fields[id].dayCount = 0;
+        this._fields[id].setDayCount(0);
+
+        // reset harvest state
+        this._fields[id].setHarvestState('notRdy');
     }
 }
 
