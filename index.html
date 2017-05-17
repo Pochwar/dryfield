@@ -1,47 +1,75 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Dryfiled</title>
+	<title>Dryfield</title>
+    <link rel="stylesheet" href="style.css"/>
 	<meta charset="utf-8"/>
+    <img src="logo.png">
 </head>
 <body>
+    <div id=page>
+    <h1>Dryfield</h1>
 
+	<p>Le but du jeu est de faire le plus grand nombre de récolte possible.</p>
+
+	<p>
+		Le principe est de devoir remplir les citernes d’eau de 3 champs qui en ont besoin d’être irrigués tout les
+		jours pour pousser.<br>
+		Vous avez une réserve d’eau globale que vous pouvez remplir en achetant de l’eau. Vous irriguez ensuite vos
+		champs en puissant dans cette réserve globale. <br>
+		Vous vendez les champs arrivés à maturité pour récupérer de l’argent que vous réinvestirez dans de l’eau.<br>
+		Si un champ est en rupture d’eau (plus d’eau dans la citerne du champ) sa récolte est perdue. Quand la citerne
+		sera réalimentée, le décompte de maturité du champ repart à 0.
+	</p>
 
 	<header>
 
-		<div id="harvest">Harvest</div>
-		<div id="litres">L</div>
-		<div id="money">$</div>
-
-		<div id="joueurs-scores">
-			<button id="joueur">gamers</button>
-			<button id="scores">scores</button>
-			<button class="start pause">GO</button>
-		</div>
+		<div id=recolte>
+		<section id=row>
+			<div id=colonne1 col-3>
+				<button id=joueur>Play</button>
+                <button id=scores>Scores</button>
+                </br>
+            </div>
+                <button id=start pause>GO</button>
+            </section>
+        </div>
+           
+			
+        <div id=compteur>
+		<section id=row>
+            <span id="harvest">Harvest</span>
+            <span id="litres">L</span>
+            <span id="money">$</span>
+                </section>
 
 	</header>
 
-	<section>
-		
-		<div id="field0">
-			<button id="irrigate-field0">irrigate-field0</button>
-			<div id="field0-value"></div>
-			<button id="harvest-field0">harvest-field0</button>
-		</div>
-
-		<div id="field1">
-			<button id="irrigate-field1">irrigate-field1</button>
-			<div id="fieldVue1"></div>
-			<button id="harvest-field1">harvest-field1</button>
-		</div>
-
+        
+	<div id="affichage">
+        <section id=row>
+		<span id=field0>
+			<button id="irrigate-field0">Irrigate</button>
+			<div id="field0-value">L</div>
+			<button id="harvest-field0">Harvest</button>
+            <div id="progress-field0"></div>
+		</span>
+        </br>
+		<span id="field1">
+			<button id="irrigate-field1">Irrigate</button>
+			<div id="field1-value">L</div>
+			<button id="harvest-field1">Harvest</button>
+            <div id="progress-field1"></div>
+		</span>
+        </br>
 		<div id="field2">
-			<button id="irrigate-field2">irrigate-field2</button>
-			<div id="fieldVue2"></div>
-			<button id="harvest-field2">harvest-field2</button>
+			<button id="irrigate-field2">Irrigate</button>
+			<div id="field2-value">L</div>
+			<button id="harvest-field2">Harvest</button>
+            <div id="progress-field2"></div>
 		</div>
-
-		
+    </div>
+        </br>
 	</section>
 
 
@@ -50,7 +78,7 @@
 		
 		<button id="waterDipslay">Buy Water</button>
 
-		<form>
+		<form id="buy_water">
 			<input type="number">
 			<input type="submit" value="BUY" id="buyWater"/>
 		</form>
@@ -72,7 +100,6 @@
 	<script src="app.js"></script>
 		
 
-
-
+    </div>
 </body>
 </html>
