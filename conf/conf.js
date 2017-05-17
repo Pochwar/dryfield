@@ -3,6 +3,8 @@ var CONF = {
         irrigationAmount: 1,
         daysToHarvest: 20,
         harvestReward: 40,
+        initialWaterConsumption: 1,
+        waterConsumptionIncrease : 0.2,
     },
     player : {
         initialMoney: 50, 

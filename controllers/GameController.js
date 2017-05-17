@@ -8,6 +8,10 @@ var GameController = function(view, player, fields) {
     this._player = player;
     this._fields = fields;
 
+    // water consumption 
+    this._waterConsumption = CONF.game.initialWaterConsumption;
+    this.gameDuration = 0;
+
     // game interval
     this._interval = null;
 
@@ -78,6 +82,9 @@ GameController.prototype.stopGame = function() {
 // run the game
 GameController.prototype.runGame = function(){
     
+    // game duration
+    this.gameDuration ++;
+
     // has player lost ?    
     var totalFieldsWater = this._fields.reduce( function(acc, el) {
         return acc + el.waterReserve;
@@ -100,21 +107,18 @@ GameController.prototype.runGame = function(){
             return;
         }
 
-        // TODO : add water consumption function
-        var waterConsumption = this.waterConsumption();
-
         // fields water reserve
         var water = element.waterReserve;
         
         // not enough water to mature => harvest is lost
-        if( water < waterConsumption) {
+        if( water < this._waterConsumption) {
             element.setWaterReserve(0);
             element.setHarvestState('dead');
             return;
         }
         
         // harvest grows
-        element.setWaterReserve( water - waterConsumption);
+        element.setWaterReserve( water - this._waterConsumption);
         
         // is harvest rdy ?
         if( element.dayCount == CONF.game.daysToHarvest) {
@@ -208,8 +212,9 @@ GameController.prototype.buyWater = function(data){
 }
 
 // water consumption
-GameController.prototype.waterConsumption = function(){
-    // TODO : calculate this...
+GameController.prototype.calculateWaterConsumption = function(){
+    
+    this.waterConsumption += this.gameDuration * CONF.game.waterConsumptionIncrease; 
     return 0.2;
 }
 
