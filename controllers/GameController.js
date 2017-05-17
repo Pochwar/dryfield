@@ -203,8 +203,8 @@ GameController.prototype.buyWater = function(data){
     }
 
     // set data
-    this._player.setMoney( Player.money - cost);
-    this._player.setWater( player.water + quantity);
+    this._player.setMoney( this._player.money - cost);
+    this._player.setWater( this._player.water + quantity);
 }
 
 // water consumption
