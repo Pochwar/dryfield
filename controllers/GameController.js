@@ -85,14 +85,16 @@ GameController.prototype.runGame = function(){
     // game duration
     this.gameDuration ++;
 
+    // calcalulate new water consumption
+    this.calculateWaterConsumption();
+    console.warn('CONSOMMATION '+this._waterConsumption);
     // has player lost ?    
     var totalFieldsWater = this._fields.reduce( function(acc, el) {
         return acc + el.waterReserve;
     }, 0);
 
     if( totalFieldsWater == 0 ) {
-        alert('Vous avez perdu');
-        this.stopGame();
+        this.gameLost();
         return;
     }
 
@@ -204,6 +206,7 @@ GameController.prototype.buyWater = function(data){
     // enough money ?
     if( this._player.money < cost) {
         alert('Pas assez d\'argent!!');
+        return;
     }
 
     // set data
@@ -214,8 +217,9 @@ GameController.prototype.buyWater = function(data){
 // water consumption
 GameController.prototype.calculateWaterConsumption = function(){
     
-    this.waterConsumption += this.gameDuration * CONF.game.waterConsumptionIncrease; 
-    return 0.2;
+    this._waterConsumption = CONF.game.initialWaterConsumption + this.gameDuration * CONF.game.waterConsumptionIncrease; 
+    this._waterConsumption = Math.min( this._waterConsumption, CONF.game.maxWaterConsumption);
+    
 }
 
 // find field id
@@ -229,4 +233,37 @@ GameController.prototype.findId = function(id){
     }
 
     return -1;
+}
+
+// game is lost
+GameController.prototype.gameLost = function() {
+    
+    // stop game
+    this.stopGame();
+
+    // get player name
+    var name = prompt('Entez votre nom pour sauvegarder votre score : )');
+    
+    // post score
+    this.postScore(name);
+}
+
+// score player score
+GameController.prototype.postScore = function(name) {
+    $.ajax({
+        type: "POST",
+        url:  CONF.general.apiUrl + '/scores/',
+        dataType: 'application/json',
+        data: {
+            name: name,
+            score: this._player.nbHarvest
+        },
+        success: function(data) {
+            console.log(data.responseText);
+        },
+        error : function(err) {
+            console.warn(err);
+        }
+    });
+
 }

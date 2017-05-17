@@ -1,10 +1,14 @@
 var CONF = {
+    general: {
+        apiUrl : 'http://10.1.108.8:3000'
+    },
     game: {
         irrigationAmount: 1,
         daysToHarvest: 20,
         harvestReward: 40,
         initialWaterConsumption: 1,
-        waterConsumptionIncrease : 0.2,
+        maxWaterConsumption: 2,
+        waterConsumptionIncrease : 0.02,
     },
     player : {
         initialMoney: 50, 

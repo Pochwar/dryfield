@@ -10,7 +10,7 @@
 
 <body>
     
-	<div id="page">
+	<div>
 		<h1>Dryfield</h1>
 		<img src="logo.png" alt="en tête" title="en tête" />
 
@@ -73,34 +73,47 @@
 				<div id="progress-field2"></div>
 			</div>
 			
+			<div>
+				<button id="waterDisplay">Buy Water</button>
+
+				<div id="buy_water">
+					<button id="closeBuyWater">x</button>
+					<form>
+						<input type="number" id="waterQty">
+						<input type="submit" value="BUY" id="buyWater"/>
+					</form>
+				</div>
+			</div>
 		</div>
 
+		<div id="display-scores">
+			<table id="table-scores">
+				<thead>
+					<tr>
+						<td>
+							joueur
+						</td>
+						<td>
+							score
+						</td>
+					</tr>
+				</thead>
+				<tbody></tbody>
+			</table>
+		</div>
 
-
-		<footer>
-			
-			<button id="waterDisplay">Buy Water</button>
-
-			<div id="buy_water">
-                <button id="closeBuyWater">x</button>
-				<form>
-					<input type="number" id="waterQty">
-					<input type="submit" value="BUY" id="buyWater"/>
-				</form>
-			</div>
-			
-
-		</footer>
-
-    </div>
+	</div>
 
 	<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 	<script src="conf/conf.js"></script>
 	<script src="tools/EventEmitter.js"></script>
 	<script src="models/Player.js"></script>
+	<script src="models/Score.js"></script>
 	<script src="models/Field.js"></script>
 	<script src="views/GameView.js"></script>
+	<script src="views/ScoreView.js"></script>
 	<script src="controllers/GameController.js"></script>
+	<script src="controllers/ScoreController.js"></script>
 	<script src="app.js"></script>
 </body>
 </html>
