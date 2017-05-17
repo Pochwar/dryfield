@@ -108,10 +108,10 @@ GameController.prototype.runGame = function(){
 GameController.prototype.irrigate = function(data){
     
     // index
-    var id = data.field;
+    var id = this.findId( data.field);
     
     // check index
-    if( !this.isFieldIndexValid(id) ) {
+    if( id == -1 ) {
         return;
     }
 
@@ -125,11 +125,11 @@ GameController.prototype.irrigate = function(data){
 // harvest field
 GameController.prototype.harvest = function(data) {
 
-    // get field id
-    var id = data.field;
-
+     // index
+    var id = this.findId( data.field);
+    
     // check index
-    if( !this.isFieldIndexValid(id) ) {
+    if( id == -1 ) {
         return;
     }
 
@@ -164,17 +164,21 @@ GameController.prototype.buyWater = function(data){
     this._player.setWater( player.water + quantity);
 }
 
-// check index validity for fields
-GameController.prototype.isFieldIndexValid = function(id) {
-     if( id < 0 || id > this._fields.length) {
-        return false;
-    }
-
-    return true;
-}
-
 // water consumption
 GameController.prototype.waterConsumption = function(){
     // TODO : calculate this...
     return 1;
+}
+
+// find field id
+GameController.prototype.findId = function(id){
+
+    var limit = this._fields.length;
+    for( i=0; i < limit; i++) {
+        if (this._fields[i].number == id) {
+            return i;
+        }
+    }
+
+    return -1;
 }
