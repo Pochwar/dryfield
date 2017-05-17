@@ -31,7 +31,7 @@ Field.prototype.setDayCount = function(day) {
 
 Field.prototype.setHarvestState = function(state) {
     
-    if( !this.harvestStateEnum.indexOf(state)) {
+    if( this.harvestStateEnum.indexOf(state) == -1) {
         console.warn('State '+state+' is not allowed in field.js model');
     }
 
