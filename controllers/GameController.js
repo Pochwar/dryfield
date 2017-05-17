@@ -106,20 +106,6 @@ GameController.prototype.runGame = function(){
 
 // irrigate field
 GameController.prototype.irrigate = function(data){
-    
-    // index
-    var id = data.field;
-    
-    // check index
-    if( !this.isFieldIndexValid(id) ) {
-        return;
-    }
-
-    // get water 
-    var water = this._fields[id].waterReserve;
-    
-    this._fields[id].setWaterReserve( water + CONF.game.irrigationAmount);
-    
 }
 
 // harvest field
