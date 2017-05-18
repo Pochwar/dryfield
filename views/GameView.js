@@ -30,6 +30,7 @@ GameView.prototype.init = function() {
     this.fields.forEach(function(field) {
         field.on('set-waterReserve', this.setWaterReserve);
         field.on('set-harvest-state', this.setHarvestState);
+        field.on('day-count', this.setDayCount);
     }, this);
 
     this.player.on("set-harvest", this.setHarvest);
@@ -103,6 +104,10 @@ GameView.prototype.buyWater = function() {
 
 GameView.prototype.setWaterReserve = function(data) {
     $('#' + data.field + "-value").text(data.waterReserve.toFixed(2) + "L");
+}
+
+GameView.prototype.setDayCount = function(data) {
+    $('#progress-' + data.field).val(data.dayCount);
 }
 
 GameView.prototype.setHarvestState = function(data) {

@@ -33,12 +33,12 @@ img {
 
 
 
-#affichage {
+#fields {
     display: flex;
     justify-content: space-around;
 }
 
-#affichage > div {
+#fields > div {
     height: 100px;
     width: 100px;
     color: #FFFFFF;
