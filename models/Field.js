@@ -23,6 +23,10 @@ Field.prototype.setWaterReserve = function(quantity) {
 
 Field.prototype.incrementDayCount = function() {
     this.dayCount++;
+    this.emit('day-count', {
+        field: this.number,
+        dayCount : this.dayCount
+    });
 }
 
 Field.prototype.setDayCount = function(day) {
