@@ -200,6 +200,11 @@ GameController.prototype.buyWater = function(data){
     // quantity
     var quantity = data.quantity;
 
+    // invalid quantity
+    if( isNaN(quantity) || quantity < 0) {
+        return;
+    }
+
     // cost
     var cost = quantity * this._player.waterPrice;
 
