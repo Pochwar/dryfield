@@ -1,4 +1,4 @@
-var GameController = function(gameView, scoreView, player, fields, score) {
+var GameController = function(gameView, scoreView, player, fields, score, market) {
 
     // set EventEmitter context to GameController context
     EventEmitter.call(this);
@@ -9,6 +9,7 @@ var GameController = function(gameView, scoreView, player, fields, score) {
     this._player = player;
     this._fields = fields;
     this._score = score;
+    this._market = market;
 
     // water consumption 
     this._waterConsumption = CONF.game.initialWaterConsumption;
@@ -103,6 +104,12 @@ GameController.prototype.runGame = function(){
 
     // calcalulate new water consumption
     this.calculateWaterConsumption();
+
+    //get currencies
+    this.getCurrencies();
+
+    //get transactions
+    this.getTransaction();
     
     // has player lost ?    
     var totalFieldsWater = this._fields.reduce( function(acc, el) {
@@ -375,4 +382,50 @@ GameController.prototype.lockGame = function() {
 // unlock game
 GameController.prototype.unlockGame = function() {
     this._gameView.unlock();
+}
+
+GameController.prototype.getCurrencies = function() {
+    $.ajax({
+        type: "GET",
+        url:  CONF.general.apiUrl + '/sales/currency/',
+        dataType: 'json',
+        success: (function(data) {
+            this._market.setWaterPrice(data.currencies.purchase);
+            this._market.setHarvestPrice(data.currencies.sales * 20);
+        }).bind(this),
+        error : function(err) {
+            console.warn(err);
+            alert('erreur de téléchargement');
+        }
+    });
+}
+
+GameController.prototype.getTransaction = function() {
+    $.ajax({
+        type: "GET",
+        url:  CONF.general.apiUrl + '/sales/',
+        dataType: 'json',
+        success: (function(data) {
+            var transactionList = data.list.map(function(transaction) {
+                //format date
+                var date = new Date(transaction.timestamp);
+                var year = date.getFullYear();
+                var month = date.getMonth()+1;
+                var day = date.getDate();
+                var formatDate = year + "/" + month + "/" + day;
+
+                //fix sale price
+                if(transaction.type === "sale"){
+                    transaction.price *= 20;
+                }
+
+                return transaction;
+            })
+            this._market.setTransaction(transactionList);
+        }).bind(this),
+        error : function(err) {
+            console.warn(err);
+            alert('erreur de téléchargement');
+        }
+    });
 }
