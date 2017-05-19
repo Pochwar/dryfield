@@ -40,6 +40,13 @@ GameView.prototype.init = function() {
 }
 
 GameView.prototype.bindEvents = function() {
+    $('#play').click((function(){
+        this.emit("show-game");
+    }).bind(this));
+
+    $('#scores').click((function(){
+        this.emit("show-scores");
+    }).bind(this));
 	
     this.fields.forEach((function(field) {
 		$('#irrigate-' + field.number).click(this.irrigate.bind(this, field));
@@ -88,7 +95,7 @@ GameView.prototype.bindEvents = function() {
             alert('Veuillez indiquer votre nom');
             return;
         }
-        this.emit("set-nom",{
+        this.emit("set-name",{
             name: name
         })
     }).bind(this));
