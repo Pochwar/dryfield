@@ -1,9 +1,9 @@
-function Market(waterPrice, harvestPrice) {
+function Market() {
     EventEmitter.call(this);
 
     this.transactions = [];
-    this.waterPrice = waterPrice;
-    this.harvestPrice = harvestPrice;
+    this.waterPrice;
+    this.harvestPrice;
 }
 
 Market.prototype = Object.create(EventEmitter.prototype);

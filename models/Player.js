@@ -1,10 +1,10 @@
-function Player(initialMoney, initialWater){
+function Player(){
     EventEmitter.call(this);
 
     this.name;
     this.nbHarvest = 0;
-    this.money = initialMoney;
-    this.water = initialWater;
+    this.money;
+    this.water;
 }
 
 Player.prototype = Object.create(EventEmitter.prototype);

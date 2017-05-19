@@ -28,10 +28,14 @@ GameView.prototype = Object.create(EventEmitter.prototype);
 GameView.prototype.constructor = GameView;
 
 GameView.prototype.init = function() {
+    this.market.setWaterPrice();
+
     //display default values
     $('#harvest').text(this.player.nbHarvest + ' Harvest(s)');
     $('#litres').text(this.player.water + ' L');
     $('#money').text(this.player.money + ' $');
+    $('#harvest-price').text('blabla');
+
 
     this.fields.forEach((function(field) {
         $('#' + field.number + "-value").text(field.waterReserve + "L");
@@ -39,8 +43,8 @@ GameView.prototype.init = function() {
 
     $('#buy_water').css('visibility', 'hidden');
     $('#waterDisplay').css('visibility', 'hidden');
-    $('#saveScore').css('visibility', 'hidden');
-    $("#waterQty").attr('max', this.player.money / CONF.player.waterPrice);
+    console.log(this.market.getWaterPrice())
+    // $("#waterQty").attr('max', data.money / this.market.getWaterPrice());
 
     //get emits
     this.fields.forEach(function(field) {
@@ -133,8 +137,6 @@ GameView.prototype.setDayCount = function(data) {
 }
 
 GameView.prototype.setHarvestState = function(data) {
-    console.log(data)
-    // Object { field: "field0", state: "dead" }
     switch(data.state){
         case "dead" :
             $('#harvest-' + data.field).css("color", "#f00");
@@ -155,7 +157,7 @@ GameView.prototype.setHarvest = function(data) {
 
 GameView.prototype.setMoney = function(data) {
     $("#money").text(data.money + " $");
-    $("#waterQty").attr('max', data.money * CONF.player.waterPrice);
+    $("#waterQty").attr('max', data.money / this.market.getWaterPrice());
 }
 
 GameView.prototype.setWater = function(data) {

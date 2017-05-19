@@ -1,7 +1,7 @@
-function Field(number, initialWaterReserve) {
+function Field(number) {
     SoundEmitter.call(this)
     this.number = number;
-    this.waterReserve = initialWaterReserve;
+    this.waterReserve;
     this.dayCount = 0;
     this.harvestState= "notRdy"; // 'notRdy', 'ok', 'dead'
     this.harvestStateEnum = ['notRdy', 'ok', 'dead'];

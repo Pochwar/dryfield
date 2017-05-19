@@ -4,13 +4,13 @@
 
 
 // create model
-var player = new Player(CONF.player.initialMoney, CONF.player.initialWater)
-var field0 = new Field('field0', CONF.field.initialWaterReserve);
-var field1 = new Field('field1', CONF.field.initialWaterReserve);
-var field2 = new Field('field2', CONF.field.initialWaterReserve);
+var player = new Player()
+var field0 = new Field('field0');
+var field1 = new Field('field1');
+var field2 = new Field('field2');
 var fields = [field0, field1, field2];
 var score = new Score();
-var market = new Market(CONF.player.waterPrice, CONF.player.harvestPrice);
+var market = new Market();
 
 // game
 var gameView = new GameView(player, fields, market);
