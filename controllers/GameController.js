@@ -41,6 +41,8 @@ var GameController = function(gameView, scoreView, player, fields, score) {
     // listen to form
     this._gameView.on('set-name', this.postScore);
 
+    // unlock game
+    this.unlockGame();
 }
 
 // extends GameController with EventEmitter
@@ -216,6 +218,7 @@ GameController.prototype.buyWater = function(data){
 
     // invalid quantity
     if( isNaN(quantity) || quantity < 0) {
+        alert('Bien tenté Ronan...');
         return;
     }
 
@@ -260,6 +263,12 @@ GameController.prototype.gameLost = function() {
     // stop game
     this.stopGame();
 
+    // reset game
+    this.reset();
+
+    // lock game
+    this.lockGame();
+
     // show score form
     this.showForm();
     
@@ -282,16 +291,14 @@ GameController.prototype.postScore = function(data) {
         },
         success: (function(data) {
             console.log(data.responseText);
-            // this.reset();
-            // this.showScores();
         }).bind(this),
         error : (function(err) {
             console.warn(err);
-            // this.reset();
         }).bind(this),
         complete: (function(){
-            this.reset();
             this.showScores();
+            this.unlockGame();
+            this.hideForm();
         }).bind(this)
     });
 
@@ -314,6 +321,8 @@ GameController.prototype.reset = function() {
 
     }, this);
 
+    // reset view
+    this._gameView.reset();
 }
 
 // show game display
@@ -335,6 +344,12 @@ GameController.prototype.showForm = function(){
     this._gameView.showForm();
 }
 
+// hide form display
+GameController.prototype.hideForm = function() {
+    this._gameView.hideForm();
+}
+
+// download scores
 GameController.prototype.getScores = function(){
     
     $.ajax({
@@ -349,4 +364,14 @@ GameController.prototype.getScores = function(){
             alert('erreur de téléchargement');
         }
     });
+}
+
+// lock game
+GameController.prototype.lockGame = function() {
+    this._gameView.lock();
+}
+
+// unlock game
+GameController.prototype.unlockGame = function() {
+    this._gameView.unlock();
 }
