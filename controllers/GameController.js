@@ -1,10 +1,11 @@
-var GameController = function(view, player, fields) {
+var GameController = function(gameView, scoreView, player, fields) {
 
     // set EventEmitter context to GameController context
     EventEmitter.call(this);
 
     // attrs
-    this._view = view;
+    this._gameView = gameView;
+    this._scoreView = scoreView;
     this._player = player;
     this._fields = fields;
 
@@ -22,10 +23,22 @@ var GameController = function(view, player, fields) {
     this.harvest = this.harvest.bind(this);
     this.buyWater = this.buyWater.bind(this);
     this.runGame = this.runGame.bind(this);
+    this.showGame = this.showGame.bind(this);
+    this.showScores = this.showScores.bind(this);
+    this.showForm = this.showForm.bind(this);
+    this.postScore = this.postScore.bind(this);
+    this.getScores = this.getScores.bind(this);
 
     // listen to stop/start
-    this._view.on('start', this.startGame);
-    this._view.on('stop', this.stopGame);
+    this._gameView.on('start', this.startGame);
+    this._gameView.on('stop', this.stopGame);
+
+    // listen to menu
+    this._gameView.on('show-game', this.showGame);
+    this._gameView.on('show-scores', this.showScores);
+
+    // listen to form
+    this._gameView.on('set-name', this.postScore);
 
 }
 
@@ -39,20 +52,20 @@ GameController.prototype.constructor = GameController;
 GameController.prototype.addGameControls = function(){
 
     // irrigate field
-    this._view.on('irrigate', this.irrigate);
+    this._gameView.on('irrigate', this.irrigate);
 
     // harvest fied
-    this._view.on('harvest', this.harvest);
+    this._gameView.on('harvest', this.harvest);
 
     // buy water
-    this._view.on('buy-water', this.buyWater);
+    this._gameView.on('buy-water', this.buyWater);
 }
 
 // remove view listener
 GameController.prototype.removeGameControls = function(){
-    this._view.off('irrigate', this.irrigate);
-    this._view.off('harvest', this.harvest);
-    this._view.off('buy-water', this.buyWater);
+    this._gameView.off('irrigate', this.irrigate);
+    this._gameView.off('harvest', this.harvest);
+    this._gameView.off('buy-water', this.buyWater);
 }
 
 // start game
@@ -246,21 +259,24 @@ GameController.prototype.gameLost = function() {
     // stop game
     this.stopGame();
 
-    // get player name
-    var name = prompt('Entez votre nom pour sauvegarder votre score : )');
+    // show score form
+    this.showForm();
     
-    // post score
-    this.postScore(name);
 }
 
 // score player score
-GameController.prototype.postScore = function(name) {
+GameController.prototype.postScore = function(data) {
+    
+    if(data.name == '') {
+        return;
+    }
+    
     $.ajax({
         type: "POST",
         url:  CONF.general.apiUrl + '/scores/',
         dataType: 'application/json',
         data: {
-            name: name,
+            name: data.name,
             score: this._player.nbHarvest
         },
         success: (function(data) {
@@ -292,4 +308,39 @@ GameController.prototype.reset = function() {
 
     }, this);
 
+}
+
+// show game display
+GameController.prototype.showGame = function(){
+    this._gameView.show();
+    this._scoreView.hide();
+}
+
+// show scores display
+GameController.prototype.showScores = function(){
+    this._gameView.hide();
+    this._scoreView.show();
+
+    this.getScores();
+}
+
+// show form display
+GameController.prototype.showForm = function(){
+    this._gameView.showForm();
+}
+
+GameController.prototype.getScores = function(){
+    
+    $.ajax({
+        type: "GET",
+        url:  CONF.general.apiUrl + '/scores/',
+        dataType: 'json',
+        success: (function(data) {
+            this._score.setScores(  data.list);
+        }).bind(this),
+        error : function(err) {
+            console.warn(err);
+            alert('erreur de téléchargement');
+        }
+    });
 }
