@@ -23,10 +23,14 @@ GameView.prototype.init = function() {
         $('#' + field.number + "-value").text(field.waterReserve + "L");
     }).bind(this));
 
+    $('#buy_water').css('visibility', 'hidden');
+    $('#waterDisplay').css('visibility', 'hidden');
+
     //get emits
     this.fields.forEach(function(field) {
         field.on('set-waterReserve', this.setWaterReserve);
         field.on('set-harvest-state', this.setHarvestState);
+        field.on('day-count', this.setDayCount);
     }, this);
 
     this.player.on("set-harvest", this.setHarvest);
@@ -35,13 +39,28 @@ GameView.prototype.init = function() {
 }
 
 GameView.prototype.bindEvents = function() {
-	this.fields.forEach((function(field) {
+	
+    this.fields.forEach((function(field) {
 		$('#irrigate-' + field.number).click(this.irrigate.bind(this, field));
 		$('#harvest-' + field.number).click(this.harvest.bind(this, field));
 	}).bind(this));
 
-	$('#waterDisplay').click(this.buyWater, this.pause);
+	$('#waterDisplay').click(this.buyWater.bind(this));
 
+    $('#closeBuyWater').click((function(){
+        this.emit("start");
+        $('#buy_water').css('visibility', 'hidden');
+    }).bind(this));
+
+    $('#buyWater').click((function(e){
+        e.preventDefault();
+        var waterQty = parseInt($('#waterQty').val());
+        this.emit("start");
+        this.emit("buy-water",{
+            quantity: waterQty
+        })
+        $('#buy_water').css('visibility', 'hidden');
+    }).bind(this));
 
 	$('#go').click((function(ev) {
 		var el = ev.target;
@@ -50,11 +69,14 @@ GameView.prototype.bindEvents = function() {
 			$(el).addClass('start');
 			$(el).removeClass('pause');
 			$(el).text('PAUSE');
+            $('#waterDisplay').css('visibility', 'visible');
 		}else{
 			this.emit('stop');
 			$(el).addClass('pause');
 			$(el).removeClass('start');
 			$(el).text('GO');
+            $('#waterDisplay').css('visibility', 'hidden');
+            $('#buy_water').css('visibility', 'hidden');
 		}
 	}).bind(this));
 }
@@ -76,11 +98,16 @@ GameView.prototype.harvest = function(field) {
 }
 
 GameView.prototype.buyWater = function() {
-	console.log('buyWater');
+    this.emit('stop');
+    $('#buy_water').css('visibility', 'visible');
 }
 
 GameView.prototype.setWaterReserve = function(data) {
-    $('#' + data.field + "-value").text(data.waterReserve + "L");
+    $('#' + data.field + "-value").text(data.waterReserve.toFixed(2) + "L");
+}
+
+GameView.prototype.setDayCount = function(data) {
+    $('#progress-' + data.field).val(data.dayCount);
 }
 
 GameView.prototype.setHarvestState = function(data) {
