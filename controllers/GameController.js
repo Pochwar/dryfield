@@ -27,6 +27,7 @@ var GameController = function(gameView, scoreView, player, fields) {
     this.showScores = this.showScores.bind(this);
     this.showForm = this.showForm.bind(this);
     this.postScore = this.postScore.bind(this);
+    this.getScores = this.getScores.bind(this);
 
     // listen to stop/start
     this._gameView.on('start', this.startGame);
@@ -319,6 +320,8 @@ GameController.prototype.showGame = function(){
 GameController.prototype.showScores = function(){
     this._gameView.hide();
     this._scoreView.show();
+
+    this.getScores();
 }
 
 // show form display
@@ -326,3 +329,18 @@ GameController.prototype.showForm = function(){
     this._gameView.showForm();
 }
 
+GameController.prototype.getScores = function(){
+    
+    $.ajax({
+        type: "GET",
+        url:  CONF.general.apiUrl + '/scores/',
+        dataType: 'json',
+        success: (function(data) {
+            this._score.setScores(  data.list);
+        }).bind(this),
+        error : function(err) {
+            console.warn(err);
+            alert('erreur de téléchargement');
+        }
+    });
+}
