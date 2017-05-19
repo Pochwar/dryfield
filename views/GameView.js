@@ -26,6 +26,7 @@ GameView.prototype.init = function() {
     $('#buy_water').css('visibility', 'hidden');
     $('#waterDisplay').css('visibility', 'hidden');
     $('#saveScore').css('visibility', 'hidden');
+    $("#waterQty").attr('max', this.player.money * CONF.player.waterPrice);
 
     //get emits
     this.fields.forEach(function(field) {
@@ -37,6 +38,11 @@ GameView.prototype.init = function() {
     this.player.on("set-harvest", this.setHarvest);
     this.player.on("set-money", this.setMoney);
     this.player.on("set-water", this.setWater);
+
+    var centerElement = (document.querySelector('body').width / 2) - 200
+    console.log(document.querySelector('body'))
+    $('#buy_water_form').css('left', centerElement + 'px');
+
 }
 
 GameView.prototype.bindEvents = function() {
@@ -68,6 +74,7 @@ GameView.prototype.bindEvents = function() {
             quantity: waterQty
         })
         $('#buy_water').css('visibility', 'hidden');
+        $('#waterQty').val(0);
     }).bind(this));
 
 	$('#go').click((function(ev) {
@@ -153,6 +160,7 @@ GameView.prototype.setHarvest = function(data) {
 
 GameView.prototype.setMoney = function(data) {
     $("#money").text(data.money + " $");
+    $("#waterQty").attr('max', data.money * CONF.player.waterPrice);
 }
 
 GameView.prototype.setWater = function(data) {
