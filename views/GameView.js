@@ -1,9 +1,10 @@
 //GameView
-function GameView(player, fields) {
+function GameView(player, fields, market) {
 	EventEmitter.call(this);
 
 	this.player = player;
 	this.fields = fields;
+    this.market = market;
 	this.init();
 	this.bindEvents();
 
@@ -13,6 +14,8 @@ function GameView(player, fields) {
     this.lock = this.lock.bind(this);
     this.unlock = this.unlock.bind(this);
     this.enableStart = this.enableStart.bind(this);
+    this.updateTransactions = this.updateTransactions.bind(this);
+    this.createLine = this.createLine.bind(this);
 }
 
 GameView.prototype = Object.create(EventEmitter.prototype);
@@ -43,6 +46,7 @@ GameView.prototype.init = function() {
     this.player.on("set-harvest", this.setHarvest);
     this.player.on("set-money", this.setMoney);
     this.player.on("set-water", this.setWater);
+    this.market.on('set-transactions', this.updateTransactions);
 }
 
 GameView.prototype.bindEvents = function() {
@@ -201,4 +205,34 @@ GameView.prototype.enableStart = function(ev) {
         $('#waterDisplay').css('visibility', 'hidden');
         $('#buy_water').css('visibility', 'hidden');
     }
+}
+
+GameView.prototype.updateTransactions = function(data) {
+     
+    $("#table-market tbody tr").remove();
+    
+    $.each(data.transactions, (function(i, val){
+
+        $("#table-market").append(this.createLine(val));
+    }).bind(this));
+}
+
+// create a kitten line for the table
+GameView.prototype.createLine = function(data) {
+
+    // data
+    var type = data['type'] || '';
+    var amount = data['amount'] || '';
+    var price = data['price'] || '';
+    var timestamp = data['timestamp'] || '';
+    
+    // line
+    var line = "<tr>";
+    line += "<td>"+type+"</td>";
+    line += "<td>"+amount+"</td>";
+    line += "<td>"+price+"</td>";
+    line += "<td>"+timestamp+"</td>";
+    line += "</tr>";
+    
+    return line;
 }
