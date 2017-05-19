@@ -31,7 +31,7 @@ GameView.prototype.init = function() {
     $('#buy_water').css('visibility', 'hidden');
     $('#waterDisplay').css('visibility', 'hidden');
     $('#saveScore').css('visibility', 'hidden');
-    $("#waterQty").attr('max', this.player.money * CONF.player.waterPrice);
+    $("#waterQty").attr('max', this.player.money / CONF.player.waterPrice);
 
     //get emits
     this.fields.forEach(function(field) {
