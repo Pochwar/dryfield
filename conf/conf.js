@@ -1,6 +1,7 @@
 var CONF = {
     general: {
-        apiUrl : 'http://10.1.108.8:3000'
+        apiUrl : 'http://10.1.108.8:3000',
+        soundsRoot : './sounds'
     },
     game: {
         irrigationAmount: 1,
@@ -18,5 +19,11 @@ var CONF = {
     },
     field : {
         initialWaterReserve: 3
+    },
+    sounds: {
+        root: './sounds/',
+        field: {
+            'irrigate': 'irrigate.wav'
+        }
     }
 };
