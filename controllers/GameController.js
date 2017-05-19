@@ -264,7 +264,7 @@ GameController.prototype.gameLost = function() {
     this.stopGame();
 
     // reset game
-    this.reset();
+    //this.reset();
 
     // lock game
     this.lockGame();
@@ -297,6 +297,7 @@ GameController.prototype.postScore = function(data) {
         }).bind(this),
         complete: (function(){
             this.showScores();
+            this.reset();
             this.unlockGame();
             this.hideForm();
         }).bind(this)
