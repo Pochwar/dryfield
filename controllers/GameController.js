@@ -1,4 +1,4 @@
-var GameController = function(gameView, scoreView, player, fields) {
+var GameController = function(gameView, scoreView, player, fields, score) {
 
     // set EventEmitter context to GameController context
     EventEmitter.call(this);
@@ -8,6 +8,7 @@ var GameController = function(gameView, scoreView, player, fields) {
     this._scoreView = scoreView;
     this._player = player;
     this._fields = fields;
+    this._score = score;
 
     // water consumption 
     this._waterConsumption = CONF.game.initialWaterConsumption;
@@ -281,11 +282,16 @@ GameController.prototype.postScore = function(data) {
         },
         success: (function(data) {
             console.log(data.responseText);
-            this.reset();
+            // this.reset();
+            // this.showScores();
         }).bind(this),
         error : (function(err) {
             console.warn(err);
+            // this.reset();
+        }).bind(this),
+        complete: (function(){
             this.reset();
+            this.showScores();
         }).bind(this)
     });
 

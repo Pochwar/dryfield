@@ -11,8 +11,10 @@
 <body>
 
 <div>
-	<h1>Dryfield</h1>
-	<img src="logo.png" alt="en tête" title="en tête" />
+	<div id="logo">
+		<img src="logo.png" alt="en tête" title="en tête" />
+		<h1>Dryfield</h1>
+	</div>
 
 	<p>Le but du jeu est de faire le plus grand nombre de récolte possible.</p>
 
@@ -31,7 +33,7 @@
 		<div id="recolte">
 
 			<div id="colonne1" class="col-3">
-				<button id="joueur">Play</button>
+				<button id="play">Play</button>
 				<button id="scores">Scores</button>
 			</div>
 
@@ -90,6 +92,12 @@
 
 			</div>
 		</div>
+	</div>
+
+	<div id="saveScore">
+		<p>Entrez votre nom pour enregistrer votre score :)</p>
+		<input type="text" id="saveScoreName"><br>
+		<button id="saveCoreSubmit">OK</button>
 	</div>
 
 	<div id="display-scores">
