@@ -25,13 +25,13 @@ ScoreView.prototype.init = function(){
      this.score.on('set-scores', this.showScores);
 }
 
-ScoreView.prototype.viewToScore = function(){
+ScoreView.prototype.viewToScore = function() {
     $('#affichage').css('display', 'none');
     $('#display-scores').css('display', 'block ');
     this.emit('show-scores');
 }
 
-ScoreView.prototype.viewToGame = function(){
+ScoreView.prototype.viewToGame = function() {
     $('#affichage').css('display', 'block ');
     $('#display-scores').css('display', 'none');
 }

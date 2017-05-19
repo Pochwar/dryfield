@@ -22,10 +22,17 @@ var GameController = function(view, player, fields) {
     this.harvest = this.harvest.bind(this);
     this.buyWater = this.buyWater.bind(this);
     this.runGame = this.runGame.bind(this);
+    this.showGame = this.showGame.bind(this);
+    this.showScores = this.showScores.bind(this);
+    this.showForm = this.showForm.bind(this);
 
     // listen to stop/start
     this._view.on('start', this.startGame);
     this._view.on('stop', this.stopGame);
+
+    // listen to menu
+    this._view.on('show-game', this.showGame);
+    this._view.on('show-scores', this.showScores);
 
 }
 
@@ -293,3 +300,19 @@ GameController.prototype.reset = function() {
     }, this);
 
 }
+
+// show game display
+GameController.prototype.showGame = function(){
+    this._view.showGame();
+}
+
+// show scores display
+GameController.prototype.showScores = function(){
+    this._view.showScores();
+}
+
+// show form display
+GameController.prototype.showForm = function(){
+    this._view.showForm();
+}
+
