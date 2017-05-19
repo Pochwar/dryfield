@@ -1,10 +1,11 @@
-var GameController = function(view, player, fields) {
+var GameController = function(gameView, scoreView, player, fields) {
 
     // set EventEmitter context to GameController context
     EventEmitter.call(this);
 
     // attrs
-    this._view = view;
+    this._gameView = gameView;
+    this._scoreView = scoreView;
     this._player = player;
     this._fields = fields;
 
@@ -27,12 +28,12 @@ var GameController = function(view, player, fields) {
     this.showForm = this.showForm.bind(this);
 
     // listen to stop/start
-    this._view.on('start', this.startGame);
-    this._view.on('stop', this.stopGame);
+    this._gameView.on('start', this.startGame);
+    this._gameView.on('stop', this.stopGame);
 
     // listen to menu
-    this._view.on('show-game', this.showGame);
-    this._view.on('show-scores', this.showScores);
+    this._gameView.on('show-game', this.showGame);
+    this._gameView.on('show-scores', this.showScores);
 
 }
 
@@ -46,20 +47,20 @@ GameController.prototype.constructor = GameController;
 GameController.prototype.addGameControls = function(){
 
     // irrigate field
-    this._view.on('irrigate', this.irrigate);
+    this._gameView.on('irrigate', this.irrigate);
 
     // harvest fied
-    this._view.on('harvest', this.harvest);
+    this._gameView.on('harvest', this.harvest);
 
     // buy water
-    this._view.on('buy-water', this.buyWater);
+    this._gameView.on('buy-water', this.buyWater);
 }
 
 // remove view listener
 GameController.prototype.removeGameControls = function(){
-    this._view.off('irrigate', this.irrigate);
-    this._view.off('harvest', this.harvest);
-    this._view.off('buy-water', this.buyWater);
+    this._gameView.off('irrigate', this.irrigate);
+    this._gameView.off('harvest', this.harvest);
+    this._gameView.off('buy-water', this.buyWater);
 }
 
 // start game
@@ -303,16 +304,18 @@ GameController.prototype.reset = function() {
 
 // show game display
 GameController.prototype.showGame = function(){
-    this._view.showGame();
+    this._gameView.show();
+    this._scoreView.hide();
 }
 
 // show scores display
 GameController.prototype.showScores = function(){
-    this._view.showScores();
+    this._gameView.hide();
+    this._scoreView.show();
 }
 
 // show form display
 GameController.prototype.showForm = function(){
-    this._view.showForm();
+    this._gameView.showForm();
 }
 

@@ -9,20 +9,20 @@ function ScoreView(score) {
     this.showScores = this.showScores.bind(this);
 
     //init
-    this.init();
+    this.hide();
 }
 
 ScoreView.prototype = Object.create(EventEmitter.prototype);
 ScoreView.prototype.constructor = ScoreView;
 
-ScoreView.prototype.init = function(){
-    $('#affichage').css('display', 'block ');
+ScoreView.prototype.hide = function(){
     $('#display-scores').css('display', 'none');
+    this.score.off('set-scores', this.showScores);
+}
 
-    $('#scores').click( this.viewToScore);
-    $('#joueur').click( this.viewToGame);
-
-     this.score.on('set-scores', this.showScores);
+ScoreView.prototype.show = function(){
+    $('#display-scores').css('display', 'block');
+    this.score.on('set-scores', this.showScores);
 }
 
 ScoreView.prototype.viewToScore = function() {
