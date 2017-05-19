@@ -1,6 +1,6 @@
 var CONF = {
     general: {
-        apiUrl : 'http://10.1.108.5:3000'
+        apiUrl : 'http://10.1.108.8:3000'
     },
     game: {
         irrigationAmount: 1,
