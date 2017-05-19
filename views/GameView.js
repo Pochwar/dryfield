@@ -155,7 +155,7 @@ GameView.prototype.setHarvest = function(data) {
 
 GameView.prototype.setMoney = function(data) {
     $("#money").text(data.money + " $");
-    $("#waterQty").attr('max', data.money * CONF.player.waterPrice);
+    $("#waterQty").attr('max', data.money / this.market.getWaterPrice());
 }
 
 GameView.prototype.setWater = function(data) {
@@ -246,6 +246,7 @@ GameView.prototype.createLine = function(data) {
 
 GameView.prototype.updateWaterPrice = function(data){
     document.querySelector('#water-price').innerText =  data.price + ' $/L';
+    $("#waterQty").attr('max', this.player.money / this.market.getWaterPrice());
 }
 
 GameView.prototype.updateHarvestPrice = function(data){
