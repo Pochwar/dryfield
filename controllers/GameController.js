@@ -1,12 +1,15 @@
-var GameController = function(view, player, fields) {
+var GameController = function(gameView, scoreView, player, fields, score, market) {
 
     // set EventEmitter context to GameController context
     EventEmitter.call(this);
 
     // attrs
-    this._view = view;
+    this._gameView = gameView;
+    this._scoreView = scoreView;
     this._player = player;
     this._fields = fields;
+    this._score = score;
+    this._market = market;
 
     // water consumption 
     this._waterConsumption = CONF.game.initialWaterConsumption;
@@ -22,11 +25,25 @@ var GameController = function(view, player, fields) {
     this.harvest = this.harvest.bind(this);
     this.buyWater = this.buyWater.bind(this);
     this.runGame = this.runGame.bind(this);
+    this.showGame = this.showGame.bind(this);
+    this.showScores = this.showScores.bind(this);
+    this.showForm = this.showForm.bind(this);
+    this.postScore = this.postScore.bind(this);
+    this.getScores = this.getScores.bind(this);
 
     // listen to stop/start
-    this._view.on('start', this.startGame);
-    this._view.on('stop', this.stopGame);
+    this._gameView.on('start', this.startGame);
+    this._gameView.on('stop', this.stopGame);
 
+    // listen to menu
+    this._gameView.on('show-game', this.showGame);
+    this._gameView.on('show-scores', this.showScores);
+
+    // listen to form
+    this._gameView.on('set-name', this.postScore);
+
+    // unlock game
+    this.unlockGame();
 }
 
 // extends GameController with EventEmitter
@@ -39,20 +56,20 @@ GameController.prototype.constructor = GameController;
 GameController.prototype.addGameControls = function(){
 
     // irrigate field
-    this._view.on('irrigate', this.irrigate);
+    this._gameView.on('irrigate', this.irrigate);
 
     // harvest fied
-    this._view.on('harvest', this.harvest);
+    this._gameView.on('harvest', this.harvest);
 
     // buy water
-    this._view.on('buy-water', this.buyWater);
+    this._gameView.on('buy-water', this.buyWater);
 }
 
 // remove view listener
 GameController.prototype.removeGameControls = function(){
-    this._view.off('irrigate', this.irrigate);
-    this._view.off('harvest', this.harvest);
-    this._view.off('buy-water', this.buyWater);
+    this._gameView.off('irrigate', this.irrigate);
+    this._gameView.off('harvest', this.harvest);
+    this._gameView.off('buy-water', this.buyWater);
 }
 
 // start game
@@ -87,6 +104,12 @@ GameController.prototype.runGame = function(){
 
     // calcalulate new water consumption
     this.calculateWaterConsumption();
+
+    //get currencies
+    this.getCurrencies();
+
+    //get transactions
+    this.getTransaction();
     
     // has player lost ?    
     var totalFieldsWater = this._fields.reduce( function(acc, el) {
@@ -184,7 +207,7 @@ GameController.prototype.harvest = function(data) {
         this._player.setNbHarvest( this._player.nbHarvest + 1);
 
         // player money
-        this._player.setMoney( this._player.money + CONF.game.harvestReward);
+        this._player.setMoney( this._player.money + this._market.getHarvestPrice());
 
         // reset field
         this._fields[id].setDayCount(0);
@@ -202,11 +225,12 @@ GameController.prototype.buyWater = function(data){
 
     // invalid quantity
     if( isNaN(quantity) || quantity < 0) {
+        alert('Bien tenté Ronan...');
         return;
     }
 
     // cost
-    var cost = quantity * this._player.waterPrice;
+    var cost = quantity * this._market.getWaterPrice();
 
     // enough money ?
     if( this._player.money < cost) {
@@ -246,30 +270,43 @@ GameController.prototype.gameLost = function() {
     // stop game
     this.stopGame();
 
-    // get player name
-    var name = prompt('Entez votre nom pour sauvegarder votre score : )');
+    // reset game
+    //this.reset();
+
+    // lock game
+    this.lockGame();
+
+    // show score form
+    this.showForm();
     
-    // post score
-    this.postScore(name);
 }
 
 // score player score
-GameController.prototype.postScore = function(name) {
+GameController.prototype.postScore = function(data) {
+    
+    if(data.name == '') {
+        return;
+    }
+    
     $.ajax({
         type: "POST",
         url:  CONF.general.apiUrl + '/scores/',
         dataType: 'application/json',
         data: {
-            name: name,
+            name: data.name,
             score: this._player.nbHarvest
         },
         success: (function(data) {
             console.log(data.responseText);
-            this.reset();
         }).bind(this),
         error : (function(err) {
             console.warn(err);
+        }).bind(this),
+        complete: (function(){
+            this.showScores();
             this.reset();
+            this.unlockGame();
+            this.hideForm();
         }).bind(this)
     });
 
@@ -292,4 +329,103 @@ GameController.prototype.reset = function() {
 
     }, this);
 
+    // reset view
+    this._gameView.reset();
+}
+
+// show game display
+GameController.prototype.showGame = function(){
+    this._gameView.show();
+    this._scoreView.hide();
+}
+
+// show scores display
+GameController.prototype.showScores = function(){
+    this._gameView.hide();
+    this._scoreView.show();
+
+    this.getScores();
+}
+
+// show form display
+GameController.prototype.showForm = function(){
+    this._gameView.showForm();
+}
+
+// hide form display
+GameController.prototype.hideForm = function() {
+    this._gameView.hideForm();
+}
+
+// download scores
+GameController.prototype.getScores = function(){
+    
+    $.ajax({
+        type: "GET",
+        url:  CONF.general.apiUrl + '/scores/',
+        dataType: 'json',
+        success: (function(data) {
+            this._score.setScores(  data.list);
+        }).bind(this),
+        error : function(err) {
+            console.warn(err);
+            alert('erreur de téléchargement');
+        }
+    });
+}
+
+// lock game
+GameController.prototype.lockGame = function() {
+    this._gameView.lock();
+}
+
+// unlock game
+GameController.prototype.unlockGame = function() {
+    this._gameView.unlock();
+}
+
+GameController.prototype.getCurrencies = function() {
+    $.ajax({
+        type: "GET",
+        url:  CONF.general.apiUrl + '/sales/currency/',
+        dataType: 'json',
+        success: (function(data) {
+            this._market.setWaterPrice(data.currencies.purchase);
+            this._market.setHarvestPrice(data.currencies.sales * 20);
+        }).bind(this),
+        error : function(err) {
+            console.warn(err);
+            alert('erreur de téléchargement');
+        }
+    });
+}
+
+GameController.prototype.getTransaction = function() {
+    $.ajax({
+        type: "GET",
+        url:  CONF.general.apiUrl + '/sales/',
+        dataType: 'json',
+        success: (function(data) {
+            var transactionList = data.list.map(function(transaction) {
+                //format date
+                var date = new Date(transaction.timestamp);
+                var year = date.getFullYear();
+                var month = date.getMonth()+1;
+                var day = date.getDate();
+                var formatDate = year + "/" + month + "/" + day;
+
+                //fix sale price
+                if(transaction.type === "sale"){
+                    transaction.price *= 20;
+                }
+
+                return transaction;
+            })
+            this._market.setTransactions(transactionList);
+        }).bind(this),
+        error : function(err) {
+            console.warn(err);
+            alert('erreur de téléchargement');
+        }
+    });
 }
