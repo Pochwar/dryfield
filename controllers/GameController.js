@@ -87,7 +87,7 @@ GameController.prototype.runGame = function(){
 
     // calcalulate new water consumption
     this.calculateWaterConsumption();
-    console.warn('CONSOMMATION '+this._waterConsumption);
+    
     // has player lost ?    
     var totalFieldsWater = this._fields.reduce( function(acc, el) {
         return acc + el.waterReserve;
@@ -101,13 +101,13 @@ GameController.prototype.runGame = function(){
     // loop all fields
     this._fields.forEach(function(element) {
 
-        // increase days by 1
-        element.incrementDayCount();
-
         // field is rdy to harvest or dead
         if( element.harvestState == 'ok' || element.harvestState == 'dead') {
             return;
         }
+
+         // increase days by 1
+        element.incrementDayCount();
 
         // fields water reserve
         var water = element.waterReserve;
@@ -263,12 +263,33 @@ GameController.prototype.postScore = function(name) {
             name: name,
             score: this._player.nbHarvest
         },
-        success: function(data) {
+        success: (function(data) {
             console.log(data.responseText);
-        },
-        error : function(err) {
+            this.reset();
+        }).bind(this),
+        error : (function(err) {
             console.warn(err);
-        }
+            this.reset();
+        }).bind(this)
     });
+
+}
+
+// reset game
+GameController.prototype.reset = function() {
+    
+    // reset player
+    this._player.setMoney( CONF.player.initialMoney);
+    this._player.setWater( CONF.player.initialWater);
+    this._player.setNbHarvest( 0);
+
+    // reset fields
+    this._fields.forEach(function(field) {
+
+        field.setWaterReserve( CONF.field.initialWaterReserve);
+        field.setDayCount(0);
+        field.setHarvestState('notRdy');
+
+    }, this);
 
 }
