@@ -413,11 +413,13 @@ GameController.prototype.getTransaction = function() {
                 var month = date.getMonth()+1;
                 var day = date.getDate();
                 var formatDate = year + "/" + month + "/" + day;
+                transaction.timestamp = formatDate;
 
                 //fix sale price
                 if(transaction.type === "sale"){
                     transaction.price *= 20;
                 }
+                transaction.price = Math.round(transaction.price*100)/100;
 
                 return transaction;
             })
