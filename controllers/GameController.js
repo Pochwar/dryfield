@@ -207,7 +207,7 @@ GameController.prototype.harvest = function(data) {
         this._player.setNbHarvest( this._player.nbHarvest + 1);
 
         // player money
-        this._player.setMoney( this._player.money + CONF.game.harvestReward);
+        this._player.setMoney( this._player.money + this._market.getHarvestPrice());
 
         // reset field
         this._fields[id].setDayCount(0);
@@ -230,7 +230,7 @@ GameController.prototype.buyWater = function(data){
     }
 
     // cost
-    var cost = quantity * this._player.waterPrice;
+    var cost = quantity * this._market.getWaterPrice();
 
     // enough money ?
     if( this._player.money < cost) {
