@@ -31,6 +31,10 @@ Field.prototype.incrementDayCount = function() {
 
 Field.prototype.setDayCount = function(day) {
     this.dayCount = day;
+    this.emit('day-count', {
+        field: this.number,
+        dayCount : this.dayCount
+    });
 }
 
 Field.prototype.setHarvestState = function(state) {
