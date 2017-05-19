@@ -141,7 +141,7 @@ button{
     border-radius: 5px;
 }
 
-#table-scores {
+#table-scores, #table-market {
     margin: auto;
     background: beige;
     border-spacing: 0;

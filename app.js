@@ -10,9 +10,10 @@ var field1 = new Field('field1', CONF.field.initialWaterReserve);
 var field2 = new Field('field2', CONF.field.initialWaterReserve);
 var fields = [field0, field1, field2];
 var score = new Score();
+var market = new Market();
 
 // game
-var gameView = new GameView(player, fields);
+var gameView = new GameView(player, fields, market);
 
 var scoreView = new ScoreView(score);
-var gameCtrl = new GameController(gameView, scoreView, player, fields, score);
+var gameCtrl = new GameController(gameView, scoreView, player, fields, score, market);
