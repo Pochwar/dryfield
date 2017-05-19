@@ -25,6 +25,7 @@ GameView.prototype.init = function() {
 
     $('#buy_water').css('visibility', 'hidden');
     $('#waterDisplay').css('visibility', 'hidden');
+    $('#saveScore').css('visibility', 'hidden');
 
     //get emits
     this.fields.forEach(function(field) {
@@ -79,6 +80,18 @@ GameView.prototype.bindEvents = function() {
             $('#buy_water').css('visibility', 'hidden');
 		}
 	}).bind(this));
+
+    $('#saveCoreSubmit').click((function(e){
+        e.preventDefault();
+        var name = $('#saveScoreName').val();
+        if (!name) {
+            alert('Veuillez indiquer votre nom');
+            return;
+        }
+        this.emit("set-nom",{
+            name: name
+        })
+    }).bind(this));
 }
 
 
@@ -137,4 +150,20 @@ GameView.prototype.setMoney = function(data) {
 
 GameView.prototype.setWater = function(data) {
     $("#litres").text(data.water + " L");
+}
+
+GameView.prototype.show = function(data) {
+    $("#affichage").css("display", "block");
+}
+
+GameView.prototype.hide = function(data) {
+    $("#affichage").css("display", "none");
+}
+
+GameView.prototype.showForm = function(data) {
+    $("#saveScore").css("visibility", "visible");
+}
+
+GameView.prototype.hideForm = function(data) {
+    $("#saveScore").css("visibility", "hidden");
 }
