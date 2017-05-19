@@ -26,6 +26,7 @@ var GameController = function(gameView, scoreView, player, fields) {
     this.showGame = this.showGame.bind(this);
     this.showScores = this.showScores.bind(this);
     this.showForm = this.showForm.bind(this);
+    this.postScore = this.postScore.bind(this);
 
     // listen to stop/start
     this._gameView.on('start', this.startGame);
@@ -34,6 +35,9 @@ var GameController = function(gameView, scoreView, player, fields) {
     // listen to menu
     this._gameView.on('show-game', this.showGame);
     this._gameView.on('show-scores', this.showScores);
+
+    // listen to form
+    this._gameView.on('set-name', this.postScore);
 
 }
 
@@ -254,21 +258,24 @@ GameController.prototype.gameLost = function() {
     // stop game
     this.stopGame();
 
-    // get player name
-    var name = prompt('Entez votre nom pour sauvegarder votre score : )');
+    // show score form
+    this.showForm();
     
-    // post score
-    this.postScore(name);
 }
 
 // score player score
-GameController.prototype.postScore = function(name) {
+GameController.prototype.postScore = function(data) {
+    
+    if(data.name == '') {
+        return;
+    }
+    
     $.ajax({
         type: "POST",
         url:  CONF.general.apiUrl + '/scores/',
         dataType: 'application/json',
         data: {
-            name: name,
+            name: data.name,
             score: this._player.nbHarvest
         },
         success: (function(data) {
