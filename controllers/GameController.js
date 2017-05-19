@@ -30,7 +30,6 @@ var GameController = function(gameView, scoreView, player, fields, score, market
     this.showForm = this.showForm.bind(this);
     this.postScore = this.postScore.bind(this);
     this.getScores = this.getScores.bind(this);
-    this.GetAPIData = this.GetAPIData.bind(this);
 
     // listen to stop/start
     this._gameView.on('start', this.startGame);
@@ -45,11 +44,6 @@ var GameController = function(gameView, scoreView, player, fields, score, market
 
     // unlock game
     this.unlockGame();
-
-    //get data from API
-    this.GetAPIData();
-
-    this.reset();
 }
 
 // extends GameController with EventEmitter
@@ -76,17 +70,6 @@ GameController.prototype.removeGameControls = function(){
     this._gameView.off('irrigate', this.irrigate);
     this._gameView.off('harvest', this.harvest);
     this._gameView.off('buy-water', this.buyWater);
-}
-
-//get data from API
-GameController.prototype.GetAPIData = function() {
-    setInterval((function(){
-        //get currencies
-        this.getCurrencies();
-
-        //get transactions
-        this.getTransaction();
-    }).bind(this), 1000);
 }
 
 // start game
@@ -121,6 +104,12 @@ GameController.prototype.runGame = function(){
 
     // calcalulate new water consumption
     this.calculateWaterConsumption();
+
+    //get currencies
+    this.getCurrencies();
+
+    //get transactions
+    this.getTransaction();
     
     // has player lost ?    
     var totalFieldsWater = this._fields.reduce( function(acc, el) {
@@ -329,8 +318,6 @@ GameController.prototype.reset = function() {
     // reset player
     this._player.setMoney( CONF.player.initialMoney);
     this._player.setWater( CONF.player.initialWater);
-    this._market.setWaterPrice( CONF.player.waterPrice)
-    this._market.setHarvestPrice( CONF.player.harvestPrice)
     this._player.setNbHarvest( 0);
 
     // reset fields
