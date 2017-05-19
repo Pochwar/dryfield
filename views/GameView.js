@@ -17,6 +17,8 @@ function GameView(player, fields, market) {
     this.createLine = this.createLine.bind(this);
     this.init = this.init.bind(this);
     this.bindEvents = this.bindEvents.bind(this);
+    this.updateHarvestPrice = this.updateHarvestPrice.bind(this);
+    this.updateWaterPrice = this.updateWaterPrice.bind(this);
 
     this.init();
     this.bindEvents();
@@ -51,6 +53,8 @@ GameView.prototype.init = function() {
     this.player.on("set-money", this.setMoney);
     this.player.on("set-water", this.setWater);
     this.market.on('set-transactions', this.updateTransactions);
+    this.market.on('set-waterprice', this.updateWaterPrice);
+    this.market.on('set-harvestprice', this.updateHarvestPrice);
 }
 
 GameView.prototype.bindEvents = function() {
@@ -238,4 +242,12 @@ GameView.prototype.createLine = function(data) {
     line += "</tr>";
     
     return line;
+}
+
+GameView.prototype.updateWaterPrice = function(data){
+    document.querySelector('#water-price').innerText =  data.price + ' $/L';
+}
+
+GameView.prototype.updateHarvestPrice = function(data){
+    document.querySelector('#harvest-price').innerText =  data.price + ' $/unité';
 }

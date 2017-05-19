@@ -45,7 +45,9 @@
 		<span id="harvest">Harvest</span>
 		<span id="litres">L</span>
 		<span id="money">$</span>
-
+		<span>Cours de la récolte: 
+					<span id="harvest-price"></span>
+		</span>
 	</div>
 
 	<button id="go" class="pause">GO</button>
@@ -79,6 +81,10 @@
 	<div>
 		<div id="buy_water">
 			<div id="buy_water_form">
+				<div>Prix de l'eau : 
+					<p id="water-price"></p>
+				</div>
+				
 				<button id="closeBuyWater">x</button>
 				<form>
 					<input type="number" id="waterQty" min="0">
@@ -139,6 +145,7 @@
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 <script src="conf/conf.js"></script>
 <script src="tools/EventEmitter.js"></script>
+<script src="tools/SoundEmitter.js"></script>
 <script src="models/Player.js"></script>
 <script src="models/Score.js"></script>
 <script src="models/Field.js"></script>

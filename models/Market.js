@@ -31,13 +31,13 @@ Market.prototype.setTransactions = function(transactions) {
 Market.prototype.setWaterPrice = function(waterPrice) {
     this.waterPrice = waterPrice;
     this.emit('set-waterprice', {
-        price: waterPrice
+        price: waterPrice.toFixed(2)
     });
 }
 
 Market.prototype.setHarvestPrice = function(harvestPrice) {
     this.harvestPrice = harvestPrice;
     this.emit('set-harvestprice', {
-        price: harvestPrice
+        price: harvestPrice.toFixed(2)
     });
 }
