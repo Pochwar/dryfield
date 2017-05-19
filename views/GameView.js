@@ -174,7 +174,9 @@ GameView.prototype.reset = function() {
 }
 
 GameView.prototype.lock = function() {
-   document.querySelector('#go').removeEventListener('click', this.enableStart);
+    document.querySelector('#go').removeEventListener('click', this.enableStart);
+    $('#waterDisplay').css('visibility', 'hidden');
+    $('#buy_water').css('visibility', 'hidden');
 }
 
 GameView.prototype.unlock = function() {
