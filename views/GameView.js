@@ -7,7 +7,12 @@ function GameView(player, fields) {
 	this.init();
 	this.bindEvents();
 
-	this.waterReserve
+	this.goListener = null;
+
+    // bind methods
+    this.lock = this.lock.bind(this);
+    this.unlock = this.unlock.bind(this);
+    this.enableStart = this.enableStart.bind(this);
 }
 
 GameView.prototype = Object.create(EventEmitter.prototype);
@@ -38,11 +43,6 @@ GameView.prototype.init = function() {
     this.player.on("set-harvest", this.setHarvest);
     this.player.on("set-money", this.setMoney);
     this.player.on("set-water", this.setWater);
-
-    var centerElement = (document.querySelector('body').width / 2) - 200
-    console.log(document.querySelector('body'))
-    $('#buy_water_form').css('left', centerElement + 'px');
-
 }
 
 GameView.prototype.bindEvents = function() {
@@ -77,23 +77,6 @@ GameView.prototype.bindEvents = function() {
         $('#waterQty').val(0);
     }).bind(this));
 
-	$('#go').click((function(ev) {
-		var el = ev.target;
-		if ($(el).hasClass('pause')) {
-			this.emit('start');
-			$(el).addClass('start');
-			$(el).removeClass('pause');
-			$(el).text('PAUSE');
-            $('#waterDisplay').css('visibility', 'visible');
-		}else{
-			this.emit('stop');
-			$(el).addClass('pause');
-			$(el).removeClass('start');
-			$(el).text('GO');
-            $('#waterDisplay').css('visibility', 'hidden');
-            $('#buy_water').css('visibility', 'hidden');
-		}
-	}).bind(this));
 
     $('#saveCoreSubmit').click((function(e){
         e.preventDefault();
@@ -181,4 +164,41 @@ GameView.prototype.showForm = function(data) {
 
 GameView.prototype.hideForm = function(data) {
     $("#saveScore").css("visibility", "hidden");
+}
+
+GameView.prototype.reset = function() {
+    $('#go').addClass('pause');
+    $('#go').removeClass('start');
+    $('#go').text('GO');
+    $('#waterDisplay').css('visibility', 'hidden');
+    $('#buy_water').css('visibility', 'hidden');
+}
+
+GameView.prototype.lock = function() {
+    document.querySelector('#go').removeEventListener('click', this.enableStart);
+    $('#waterDisplay').css('visibility', 'hidden');
+    $('#buy_water').css('visibility', 'hidden');
+}
+
+GameView.prototype.unlock = function() {
+   document.querySelector('#go').addEventListener('click', this.enableStart);
+}
+
+GameView.prototype.enableStart = function(ev) {
+    var el = ev.target;
+   
+    if ($(el).hasClass('pause')) {
+        this.emit('start');
+        $(el).addClass('start');
+        $(el).removeClass('pause');
+        $(el).text('PAUSE');
+        $('#waterDisplay').css('visibility', 'visible');
+    }else{
+        this.emit('stop');
+        $(el).addClass('pause');
+        $(el).removeClass('start');
+        $(el).text('GO');
+        $('#waterDisplay').css('visibility', 'hidden');
+        $('#buy_water').css('visibility', 'hidden');
+    }
 }

@@ -9,87 +9,84 @@
 </head>
 
 <body>
+<div id="superLogo">
+	<div id="logo"><img src="logo.png" alt="en tête" title="en tête" /></div>
+	<h1>Dryfield</h1>
+</div>
 
-<div>
-	<div id="superLogo">
-		<div id="logo"><img src="logo.png" alt="en tête" title="en tête" /></div>
-		<h1>Dryfield</h1>
+<div id="purpose">
+	<p>Le but du jeu est de faire le plus grand nombre de récolte possible.</p>
+	<p>
+		Le principe est de devoir remplir les citernes d’eau de 3 champs qui en ont besoin d’être irrigués tout les
+		jours pour pousser.<br>
+		Vous avez une réserve d’eau globale que vous pouvez remplir en achetant de l’eau. Vous irriguez ensuite vos
+		champs en puissant dans cette réserve globale. <br>
+		Vous vendez les champs arrivés à maturité pour récupérer de l’argent que vous réinvestirez dans de l’eau.<br>
+		Si un champ est en rupture d’eau (plus d’eau dans la citerne du champ) sa récolte est perdue. Quand la citerne
+		sera réalimentée, le décompte de maturité du champ repart à 0.
+	</p>
+</div>
+
+<header>
+
+	<div id="switch">
+		<button id="play">Play</button>
+		<button id="scores">Scores</button>
 	</div>
 
-	<div id="purpose">
-		<p>Le but du jeu est de faire le plus grand nombre de récolte possible.</p>
-		<p>
-			Le principe est de devoir remplir les citernes d’eau de 3 champs qui en ont besoin d’être irrigués tout les
-			jours pour pousser.<br>
-			Vous avez une réserve d’eau globale que vous pouvez remplir en achetant de l’eau. Vous irriguez ensuite vos
-			champs en puissant dans cette réserve globale. <br>
-			Vous vendez les champs arrivés à maturité pour récupérer de l’argent que vous réinvestirez dans de l’eau.<br>
-			Si un champ est en rupture d’eau (plus d’eau dans la citerne du champ) sa récolte est perdue. Quand la citerne
-			sera réalimentée, le décompte de maturité du champ repart à 0.
-		</p>
+
+
+</header>
+
+<div id="affichage">
+
+	<div id="compteur">
+
+		<span id="harvest">Harvest</span>
+		<span id="litres">L</span>
+		<span id="money">$</span>
+
 	</div>
 
-	<header>
+	<button id="go" class="pause">GO</button>
+	<button id="waterDisplay">Buy Water</button>
 
-		<div id="switch">
-			<button id="play">Play</button>
-			<button id="scores">Scores</button>
+
+	<div id="fields">
+
+		<div id="field0">
+			<button id="irrigate-field0">Irrigate</button>
+			<div id="field0-value">L</div>
+			<button id="harvest-field0">Harvest</button>
+			<progress value="0" max="20" id="progress-field0"></progress>
 		</div>
 
-
-
-	</header>
-
-	<div id="affichage">
-
-		<div id="compteur">
-
-			<span id="harvest">Harvest</span>
-			<span id="litres">L</span>
-			<span id="money">$</span>
-
+		<div id="field1">
+			<button id="irrigate-field1">Irrigate</button>
+			<div id="field1-value">L</div>
+			<button id="harvest-field1">Harvest</button>
+			<progress value="0" max="20"  id="progress-field1"></progress>
 		</div>
 
-		<button id="go" class="pause">GO</button>
-		<button id="waterDisplay">Buy Water</button>
-
-
-		<div id="fields">
-
-			<div id="field0">
-				<button id="irrigate-field0">Irrigate</button>
-				<div id="field0-value">L</div>
-				<button id="harvest-field0">Harvest</button>
-				<progress value="0" max="20" id="progress-field0"></progress>
-			</div>
-
-			<div id="field1">
-				<button id="irrigate-field1">Irrigate</button>
-				<div id="field1-value">L</div>
-				<button id="harvest-field1">Harvest</button>
-				<progress value="0" max="20"  id="progress-field1"></progress>
-			</div>
-
-			<div id="field2">
-				<button id="irrigate-field2">Irrigate</button>
-				<div id="field2-value">L</div>
-				<button id="harvest-field2">Harvest</button>
-				<progress value="0" max="20"  id="progress-field2"></progress>
-			</div>
-
+		<div id="field2">
+			<button id="irrigate-field2">Irrigate</button>
+			<div id="field2-value">L</div>
+			<button id="harvest-field2">Harvest</button>
+			<progress value="0" max="20"  id="progress-field2"></progress>
 		</div>
-		<div>
-			<div id="buy_water">
-				<div id="buy_water_form">
-					<button id="closeBuyWater">x</button>
-					<form>
-						<input type="number" id="waterQty" min="0">
-						<input type="submit" value="BUY" id="buyWater"/>
-					</form>
-				</div>
-			</div>
 
+	</div>
+	<div>
+		<div id="buy_water">
+			<div id="buy_water_form">
+				<button id="closeBuyWater">x</button>
+				<form>
+					<input type="number" id="waterQty" min="0">
+					<input type="submit" value="BUY" id="buyWater"/>
+				</form>
+			</div>
 		</div>
+
 	</div>
 
 	<div id="saveScore">
@@ -99,6 +96,8 @@
 			<button id="saveCoreSubmit">OK</button>
 		</div>
 	</div>
+
+
 
 	<div id="display-scores">
 		<table id="table-scores">
@@ -127,7 +126,6 @@
 <script src="views/GameView.js"></script>
 <script src="views/ScoreView.js"></script>
 <script src="controllers/GameController.js"></script>
-<script src="controllers/ScoreController.js"></script>
 <script src="app.js"></script>
 </body>
 </html>
