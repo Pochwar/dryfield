@@ -5,8 +5,7 @@ function GameView(player, fields, market) {
 	this.player = player;
 	this.fields = fields;
     this.market = market;
-	this.init();
-	this.bindEvents();
+
 
 	this.goListener = null;
 
@@ -16,6 +15,11 @@ function GameView(player, fields, market) {
     this.enableStart = this.enableStart.bind(this);
     this.updateTransactions = this.updateTransactions.bind(this);
     this.createLine = this.createLine.bind(this);
+    this.init = this.init.bind(this);
+    this.bindEvents = this.bindEvents.bind(this);
+
+    this.init();
+    this.bindEvents();
 }
 
 GameView.prototype = Object.create(EventEmitter.prototype);
@@ -210,7 +214,6 @@ GameView.prototype.enableStart = function(ev) {
 GameView.prototype.updateTransactions = function(data) {
      
     $("#table-market tbody tr").remove();
-    
     $.each(data.transactions, (function(i, val){
 
         $("#table-market").append(this.createLine(val));

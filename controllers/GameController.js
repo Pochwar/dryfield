@@ -421,7 +421,7 @@ GameController.prototype.getTransaction = function() {
 
                 return transaction;
             })
-            this._market.setTransaction(transactionList);
+            this._market.setTransactions(transactionList);
         }).bind(this),
         error : function(err) {
             console.warn(err);
